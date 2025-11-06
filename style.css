@@ -1,9 +1,10 @@
 /*
-  Eliud — Portfolio Styles
+  Eliud — Portfolio Styles (clean rewrite)
   - Dark futuristic UI with neon accents
   - Glassmorphism cards, gradients, scroll animations
   - Light/Dark theme via [data-theme]
   - Accent cycles: neon blue / green / orange / pink
+  - Mobile menu, roadmap rail, section reveal variants, reduced motion
 */
 
 /* CSS VARIABLES */
@@ -131,6 +132,7 @@ html[data-menu-open='true'] .menu-toggle::after { transform: rotate(-45deg); }
   html[data-menu-open='true'] .nav { transform: scale(1); opacity: 1; pointer-events: auto; }
 }
 
+/* THEME TOGGLE */
 .theme-toggle {
   position: relative; display: grid; place-items: center;
   width: 44px; height: 44px; border-radius: 999px;
@@ -234,10 +236,9 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
 .values-grid .value:nth-child(2) { transition-delay: 90ms; }
 .values-grid .value:nth-child(3) { transition-delay: 140ms; }
 
-/* Pointer tracking for highlight (fallback: defaults set in :after) */
+/* Pointer tracking defaults */
 .values-grid .value,
 .about-story { --mx: 20%; --my: 20%; }
-
 
 /* EXPERIENCE */
 .exp-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
@@ -328,43 +329,53 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   animation: steam-rise 2.8s ease-in-out infinite;
 }
 
-@keyframes coffee-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.0); }
-  50% { box-shadow: 0 0 0 0 rgba(0,0,0,0.0); }
-}
-@keyframes coffee-shine {
-  0% { transform: translateX(-10%) rotate(8deg); }
-  50% { transform: translateX(40%) rotate(8deg); }
-  100% { transform: translateX(110%) rotate(8deg); }
-}
-@keyframes steam-rise {
-  0% { transform: translateY(4px) scale(0.9); opacity: 0.0; }
-  20% { opacity: 0.7; }
-  60% { transform: translateY(-8px) scale(1.05); opacity: 0.9; }
-  100% { transform: translateY(-14px) scale(1.1); opacity: 0; }
-}
+@keyframes coffee-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0.0); } 50% { box-shadow: 0 0 0 0 rgba(0,0,0,0.0); } }
+@keyframes coffee-shine { 0% { transform: translateX(-10%) rotate(8deg); } 50% { transform: translateX(40%) rotate(8deg); } 100% { transform: translateX(110%) rotate(8deg); } }
+@keyframes steam-rise { 0% { transform: translateY(4px) scale(0.9); opacity: 0.0; } 20% { opacity: 0.7; } 60% { transform: translateY(-8px) scale(1.05); opacity: 0.9; } 100% { transform: translateY(-14px) scale(1.1); opacity: 0; } }
 
 /* SCROLL REVEAL */
 .reveal { opacity: 0; transform: translateY(12px); transition: opacity 700ms ease, transform 600ms ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+/* Reveal variants */
+.reveal[data-anim='fade-left'] { transform: translateX(18px); }
+.reveal[data-anim='fade-left'].is-visible { transform: translateX(0); }
+.reveal[data-anim='fade-right'] { transform: translateX(-18px); }
+.reveal[data-anim='fade-right'].is-visible { transform: translateX(0); }
+.reveal[data-anim='fade-up'] { transform: translateY(18px); }
+.reveal[data-anim='fade-up'].is-visible { transform: translateY(0); }
+.reveal[data-anim='scale-in'] { transform: scale(.98); }
+.reveal[data-anim='scale-in'].is-visible { transform: scale(1); }
 
 /* THEME RIPPLE OVERLAY */
 #ripple-root { position: fixed; inset: 0; pointer-events: none; z-index: 999; overflow: hidden; }
 .ripple {
   position: absolute; width: 12px; height: 12px; border-radius: 999px;
   transform: translate(-50%, -50%) scale(1);
-  opacity: 0.35;
-  filter: blur(0.3px);
+  opacity: 0.35; filter: blur(0.3px);
   background: radial-gradient(circle at center, var(--accent-2), transparent 60%);
   box-shadow: var(--glow);
   animation: ripple-wave 900ms ease forwards;
 }
+@keyframes ripple-wave { 0% { transform: translate(-50%, -50%) scale(1); opacity: .35; } 60% { opacity: .25; } 100% { transform: translate(-50%, -50%) scale(160); opacity: 0; } }
 
-@keyframes ripple-wave {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: .35; }
-  60% { opacity: .25; }
-  100% { transform: translate(-50%, -50%) scale(160); opacity: 0; }
+/* Left roadmap rail */
+.roadmap {
+  position: fixed; left: 14px; top: 96px; bottom: 96px; width: 28px; z-index: 30;
+  display: none;
 }
+@media (min-width: 900px) { .roadmap { display: block; } }
+.roadmap .road { position: absolute; left: 13px; top: 0; bottom: 0; width: 2px; background-image: repeating-linear-gradient(180deg, rgba(255,255,255,0.3) 0 12px, transparent 12px 22px); filter: drop-shadow(0 0 6px var(--accent)); animation: road-move 6s linear infinite; }
+@keyframes road-move { 0% { background-position-y: 0; } 100% { background-position-y: 34px; } }
+.road-dot { position: absolute; left: 4px; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--btn-bg); cursor: pointer; transition: box-shadow 200ms ease, transform 160ms ease, border-color 200ms ease; }
+.road-dot:hover { box-shadow: var(--glow); transform: translateY(-1px); border-color: var(--accent); }
+.road-dot.active { box-shadow: var(--glow); border-color: var(--accent); }
+.roadmap .road-dot:nth-of-type(2) { top: 6%; }
+.roadmap .road-dot:nth-of-type(3) { top: 26%; }
+.roadmap .road-dot:nth-of-type(4) { top: 50%; }
+.roadmap .road-dot:nth-of-type(5) { top: 74%; }
+.roadmap .road-dot:nth-of-type(6) { top: 92%; }
+.road-jeep { position: absolute; left: 8px; width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, var(--accent-2), var(--accent)); box-shadow: var(--glow); transform: translateY(-50%); top: var(--jeep-y, 6%); transition: top 380ms cubic-bezier(.2,.7,.2,1); }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -374,8 +385,273 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
 }
 
 /* Small-screen performance: soften glows */
-@media (max-width: 640px) {
-  :root { --glow: 0 0 18px rgba(76, 201, 255, 0.45), 0 0 28px rgba(76, 201, 255, 0.2); }
-}
+@media (max-width: 640px) { :root { --glow: 0 0 18px rgba(76, 201, 255, 0.45), 0 0 28px rgba(76, 201, 255, 0.2); } }
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eliud | Tourism Marketing Manager & Web Developer</title>
+    <meta name="description" content="Portfolio of Eliud — Tourism Marketing Manager & Web Developer. Projects, experience, referees, and contact." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="theme-color" content="#0b0f14" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <!-- THEME RIPPLE CONTAINER -->
+    <div id="ripple-root" aria-hidden="true"></div>
+
+    <!-- LEFT ROADMAP RAIL (wayfinding) -->
+    <aside class="roadmap" aria-hidden="true">
+      <div class="road"></div>
+      <button class="road-dot" data-target="#home" aria-label="Go to Home"></button>
+      <button class="road-dot" data-target="#about" aria-label="Go to About"></button>
+      <button class="road-dot" data-target="#experience" aria-label="Go to Experience"></button>
+      <button class="road-dot" data-target="#referees" aria-label="Go to Referees"></button>
+      <button class="road-dot" data-target="#contact" aria-label="Go to Contact"></button>
+      <span class="road-jeep" aria-hidden="true"></span>
+    </aside>
+
+    <!-- HEADER -->
+    <header class="site-header reveal" id="top">
+      <div class="container header-inner">
+        <a href="#top" class="brand" aria-label="Eliud logo">
+          <span class="brand-word">Eliud</span><span class="brand-accent">M</span>
+        </a>
+
+        <button id="menuToggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav"></button>
+        <nav id="primaryNav" class="nav" aria-label="Primary">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#experience" class="nav-link">Experience</a>
+          <a href="#referees" class="nav-link">Referees</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <span class="icon sun" aria-hidden="true"></span>
+          <span class="icon moon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section id="home" class="section hero-section reveal" data-anim="fade-right">
+        <div class="container hero-grid">
+          <div class="hero-media">
+            <img src="./assets/hero/profile.jpg" alt="Portrait of Eliud" class="hero-img" width="900" height="1100" />
+          </div>
+          <div class="hero-copy">
+            <h1 class="hero-title neon">Hey, I'm Eliud</h1>
+            <p class="hero-role">Tourism Marketing Manager & Web Developer</p>
+            <p class="hero-tagline">I map dreams to journeys, code visions to clicks — rhythm in strategy, harmony in pixels, momentum in the market.</p>
+            <div class="hero-ctas">
+              <a class="btn btn-primary" href="./assets/Neboh_CV.pdf" target="_blank" rel="noopener">Download CV</a>
+              <a class="btn btn-ghost" href="https://wa.me/000000000000" target="_blank" rel="noopener">Let’s Talk</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="section reveal" data-anim="fade-up">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title neon">About</h2>
+            <p class="section-sub">A curious builder at the intersection of tourism, brand, and code.</p>
+          </div>
+          <div class="about-grid">
+            <p class="about-story card glass">
+              I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution — so every click feels natural and every journey feels memorable.
+            </p>
+            <div class="values-grid">
+              <article class="card glass value">
+                <h3>Creativity</h3>
+                <p>Original concepts with measurable outcomes — ideas that travel further.</p>
+              </article>
+              <article class="card glass value">
+                <h3>Reliability</h3>
+                <p>Clear comms, tight delivery, and ownership from brief to ship.</p>
+              </article>
+              <article class="card glass value">
+                <h3>Digital Excellence</h3>
+                <p>Performance-first design, clean code, and systems that scale.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE -->
+      <section id="experience" class="section reveal" data-anim="fade-left">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title neon">Experience</h2>
+            <p class="section-sub">Selected roles and outcomes</p>
+          </div>
+          <div class="exp-grid">
+            <article class="card glass exp-card" data-expanded="false">
+              <h3>Tourism Marketing</h3>
+              <ul>
+                <li>Designed destination campaigns increasing inquiries and bookings.</li>
+                <li>Built partner funnels, email drips, and retargeting sequences.</li>
+                <li>Optimized content calendars mapped to traveler intent.</li>
+              </ul>
+              <div class="exp-more" id="exp-more-1" hidden>
+                <p>From city breaks to bucket‑list safaris, I map content to traveler intent, then pair it with distribution that compounds. I build partner co‑marketing, nurture sequences, and remarketing paths that lift qualified leads while staying on brand.</p>
+                <ul>
+                  <li>Devised geo‑targeted creative and landing pages for seasonal peaks.</li>
+                  <li>Developed multi‑touch attribution dashboards for campaign clarity.</li>
+                  <li>Negotiated influencer/media buys tied to measurable KPIs.</li>
+                </ul>
+              </div>
+              <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-1">Read more</button>
+            </article>
+            <article class="card glass exp-card" data-expanded="false">
+              <h3>Web Development & Branding Projects</h3>
+              <ul>
+                <li>Shipped responsive websites with modern stacks and SEO foundations.</li>
+                <li>Created component libraries and brand systems for consistency.</li>
+                <li>Integrated analytics and A/B tests to lift conversions.</li>
+              </ul>
+              <div class="exp-more" id="exp-more-2" hidden>
+                <p>My builds favor clarity and speed — accessible UI, clean information architecture, and design tokens for consistency. I implement analytics and test hypotheses rapidly, turning insights into incremental lifts.</p>
+                <ul>
+                  <li>Implemented schema, OG tags, and performance budgets.</li>
+                  <li>Set up component libraries with documented variants and states.</li>
+                  <li>Ran iterative A/B tests on CTAs, layout, and copy for uplift.</li>
+                </ul>
+              </div>
+              <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-2">Read more</button>
+            </article>
+            <article class="card glass exp-card" data-expanded="false">
+              <h3>Content Creation</h3>
+              <ul>
+                <li>Produced multimedia stories highlighting local culture and value.</li>
+                <li>Managed social assets with data-led iterations.</li>
+                <li>Scripted short-form video with clear CTAs and trackable goals.</li>
+              </ul>
+              <div class="exp-more" id="exp-more-3" hidden>
+                <p>I architect narratives that move — editorial calendars anchored to audience needs, evergreen assets for compounding reach, and campaigns that connect brand voice to traveler emotion.</p>
+                <ul>
+                  <li>Directed photo/video shoots with clear storyboards and deliverables.</li>
+                  <li>Repurposed long‑form content into high‑retention short formats.</li>
+                  <li>Aligned creators and partners with brand guidelines and goals.</li>
+                </ul>
+              </div>
+              <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-3">Read more</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- REFEREES / TESTIMONIALS -->
+      <section id="referees" class="section reveal" data-anim="scale-in">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title neon">Referees</h2>
+            <p class="section-sub">Trusted partners and collaborators</p>
+          </div>
+          <div class="refs-grid">
+            <!-- Example 1 -->
+            <article class="card glass ref-card">
+              <div class="ref-header">
+                <img src="./assets/refs/ref1.jpg" alt="Referee 1" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div>
+                  <h3 class="ref-name">Jane Mwangi</h3>
+                  <p class="ref-role">Brand Lead, Savannah Collective</p>
+                </div>
+                <a class="wa" href="https://wa.me/254700000001" target="_blank" rel="noopener" aria-label="WhatsApp Jane">
+                  <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
+                </a>
+              </div>
+              <p class="ref-quote">Eliud translates abstract brand ambition into practical systems — our destination launch felt cinematic yet grounded, and the site funnel finally worked like a rhythm you can trust.</p>
+            </article>
+
+            <!-- Example 2 -->
+            <article class="card glass ref-card">
+              <div class="ref-header">
+                <img src="./assets/refs/ref2.jpg" alt="Referee 2" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div>
+                  <h3 class="ref-name">David Okoro</h3>
+                  <p class="ref-role">Head of Growth, Coastline Ventures</p>
+                </div>
+                <a class="wa" href="https://wa.me/254700000002" target="_blank" rel="noopener" aria-label="WhatsApp David">
+                  <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
+                </a>
+              </div>
+              <p class="ref-quote">He built a clean, fast web experience and aligned the content engine to our ICP — the lift in qualified leads was immediate and sustained.</p>
+            </article>
+
+            <!-- Example 3 -->
+            <article class="card glass ref-card">
+              <div class="ref-header">
+                <img src="./assets/refs/ref3.jpg" alt="Referee 3" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div>
+                  <h3 class="ref-name">Sasha Karim</h3>
+                  <p class="ref-role">Producer, Atlas Creative</p>
+                </div>
+                <a class="wa" href="https://wa.me/254700000003" target="_blank" rel="noopener" aria-label="WhatsApp Sasha">
+                  <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
+                </a>
+              </div>
+              <p class="ref-quote">From the first brief, Eliud brought clarity and calm — crisp strategy, tasteful visuals, and delivery that made us look effortlessly premium.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT ICONS ROW -->
+      <section id="contact" class="section reveal" data-anim="fade-up">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title neon">Contact</h2>
+            <p class="section-sub">Icons only — tap to connect</p>
+          </div>
+
+          <div class="contact-row">
+            <a href="mailto:placeholder@example.com" class="icon-link" target="_blank" rel="noopener" aria-label="Email">
+              <img src="./assets/logos/email.png" alt="Email" />
+            </a>
+            <a href="https://wa.me/000000000000" class="icon-link" target="_blank" rel="noopener" aria-label="WhatsApp">
+              <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
+            </a>
+            <a href="https://facebook.com/placeholder" class="icon-link" target="_blank" rel="noopener" aria-label="Facebook">
+              <img src="./assets/logos/facebook.png" alt="Facebook" />
+            </a>
+            <a href="https://linkedin.com/in/placeholder" class="icon-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <img src="./assets/logos/linkedin.png" alt="LinkedIn" />
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- COFFEE CHAT / FOOTER CTA -->
+    <footer class="site-footer reveal">
+      <div class="container footer-inner">
+        <div class="coffee coffee-animated card glass">
+          <div class="coffee-left">
+            <span class="coffee-icon" aria-hidden="true"></span>
+            <p class="coffee-text">Let’s talk business, web, tourism and ideas. Book a coffee meeting.</p>
+          </div>
+          <div class="coffee-actions">
+            <a class="btn btn-primary" href="https://wa.me/000000000000" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn btn-ghost" href="https://cal.com/placeholder/coffee" target="_blank" rel="noopener">Book on Cal.com</a>
+          </div>
+        </div>
+        <div class="legal">
+          <small>© <span id="year"></span> Eliud. All rights reserved.</small>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+  </html>
 
 
