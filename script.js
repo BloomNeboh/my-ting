@@ -112,6 +112,36 @@
 
   // Initial accent sync (if user has a preference stored in future)
   updateAccent(accentIndex);
+
+  // Experience expand/collapse
+  document.querySelectorAll('.exp-card').forEach((card) => {
+    const btn = card.querySelector('.exp-toggle');
+    const panel = card.querySelector('.exp-more');
+    if (!btn || !panel) return;
+
+    function setExpanded(expanded) {
+      card.setAttribute('data-expanded', expanded ? 'true' : 'false');
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      panel.hidden = !expanded;
+      // for smooth transition, let CSS handle max-height on attribute change
+      btn.textContent = expanded ? 'Show less' : 'Read more';
+    }
+
+    btn.addEventListener('click', () => {
+      const expanded = card.getAttribute('data-expanded') === 'true';
+      setExpanded(!expanded);
+    });
+
+    // Keyboard accessibility: open with Enter/Space when focused on card
+    card.addEventListener('keypress', (e) => {
+      if (e.target === btn) return; // button already handles
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const expanded = card.getAttribute('data-expanded') === 'true';
+        setExpanded(!expanded);
+      }
+    });
+  });
 })();
 
 
