@@ -365,8 +365,12 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   display: none;
 }
 @media (min-width: 900px) { .roadmap { display: block; } }
-.roadmap .road { position: absolute; left: 13px; top: 0; bottom: 0; width: 2px; background-image: repeating-linear-gradient(180deg, rgba(255,255,255,0.3) 0 12px, transparent 12px 22px); filter: drop-shadow(0 0 6px var(--accent)); animation: road-move 6s linear infinite; }
-@keyframes road-move { 0% { background-position-y: 0; } 100% { background-position-y: 34px; } }
+.roadmap .road { position: absolute; left: 7px; top: 0; bottom: 0; width: 14px; }
+.roadmap .road .road-edge { position: absolute; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.04)); filter: blur(0.2px); opacity: .8; }
+.roadmap .road .road-edge.left { left: 0; }
+.roadmap .road .road-edge.right { right: 0; }
+.roadmap .road .road-center { position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background-image: repeating-linear-gradient(180deg, rgba(255,255,255,0.8) 0 10px, transparent 10px 22px); filter: drop-shadow(0 0 6px var(--accent)); animation: road-move 6s linear infinite; }
+@keyframes road-move { 0% { background-position-y: 0; } 100% { background-position-y: 28px; } }
 .road-dot { position: absolute; left: 4px; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--btn-bg); cursor: pointer; transition: box-shadow 200ms ease, transform 160ms ease, border-color 200ms ease; }
 .road-dot:hover { box-shadow: var(--glow); transform: translateY(-1px); border-color: var(--accent); }
 .road-dot.active { box-shadow: var(--glow); border-color: var(--accent); }
@@ -380,7 +384,7 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   border: 2px solid var(--accent-2); opacity: .6; pointer-events: none;
   animation: road-ripple 800ms ease-out forwards;
 }
-.road-jeep { position: absolute; left: 8px; width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, var(--accent-2), var(--accent)); box-shadow: var(--glow); transform: translateY(-50%); top: var(--jeep-y, 6%); transition: top 380ms cubic-bezier(.2,.7,.2,1); }
+.road-jeep { position: absolute; left: 7px; transform: translateY(-50%); top: var(--jeep-y, 6%); transition: top 380ms cubic-bezier(.2,.7,.2,1); color: var(--accent-2); filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35)) drop-shadow(0 0 10px var(--accent)); }
 .road-jeep.bounce { animation: jeep-bounce 600ms cubic-bezier(.2,.9,.2,1); }
 .road-jeep.tilt-left { transform: translateY(-50%) rotate(-8deg); }
 .road-jeep.tilt-right { transform: translateY(-50%) rotate(8deg); }
@@ -388,6 +392,10 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
 @keyframes road-ping { 0% { transform: scale(.85); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
 @keyframes road-ripple { 0% { transform: translateY(-50%) scale(.9); opacity: .7; } 100% { transform: translateY(-50%) scale(1.8); opacity: 0; } }
 @keyframes jeep-bounce { 0% { transform: translateY(calc(-50% + 0px)); } 35% { transform: translateY(calc(-50% - 6px)); } 100% { transform: translateY(calc(-50% + 0px)); } }
+
+/* Dust puff */
+.dust { position: absolute; left: 0; right: 0; margin: 0 auto; width: 24px; height: 12px; filter: blur(2px); opacity: .6; background: radial-gradient(ellipse at center, rgba(255,255,255,0.3), transparent 70%); transform: translateY(-50%); animation: dust-puff 700ms ease-out forwards; }
+@keyframes dust-puff { 0% { transform: translateY(-50%) scale(0.8); opacity: .5; } 60% { transform: translateY(-70%) scale(1.2); opacity: .7; } 100% { transform: translateY(-90%) scale(1.6); opacity: 0; } }
 
 /* Section themed rail effects */
 html[data-active-section='home'] .roadmap .road { filter: drop-shadow(0 0 10px var(--accent)); }
