@@ -7,6 +7,7 @@
   const docEl = document.documentElement;
   const rippleRoot = document.getElementById('ripple-root');
   const themeToggle = document.getElementById('themeToggle');
+  const menuToggle = document.getElementById('menuToggle');
 
   // Accent palette rotation
   const ACCENTS = [
@@ -30,6 +31,8 @@
   function toggleTheme() {
     const next = currentTheme() === 'dark' ? 'light' : 'dark';
     docEl.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch {}
+    updateMetaThemeColor();
   }
   function updateAccent(index) {
     const a = ACCENTS[index % ACCENTS.length];
@@ -79,6 +82,22 @@
     });
   }
 
+  // Initialize theme: localStorage or system preference
+  (function initTheme() {
+    try {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light' || saved === 'dark') {
+        docEl.setAttribute('data-theme', saved);
+      } else {
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        docEl.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+      }
+    } catch {
+      // ignore
+    }
+    updateMetaThemeColor();
+  })();
+
   // Scroll Reveal
   const revealNodes = new Set();
   const io = new IntersectionObserver((entries) => {
@@ -112,6 +131,31 @@
 
   // Initial accent sync (if user has a preference stored in future)
   updateAccent(accentIndex);
+
+  // Mobile menu
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      const open = docEl.getAttribute('data-menu-open') === 'true';
+      const next = !open;
+      docEl.setAttribute('data-menu-open', next ? 'true' : 'false');
+      menuToggle.setAttribute('aria-expanded', next ? 'true' : 'false');
+    });
+    // Close on nav click (for one-page anchors)
+    document.querySelectorAll('#primaryNav .nav-link').forEach((a) => {
+      a.addEventListener('click', () => {
+        docEl.setAttribute('data-menu-open', 'false');
+        if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Meta theme-color updater (for mobile browser UI)
+  function updateMetaThemeColor() {
+    const meta = document.querySelector("meta[name='theme-color']");
+    if (!meta) return;
+    const bg = getCSS('--bg');
+    meta.setAttribute('content', bg || (currentTheme() === 'dark' ? '#0b0f14' : '#f7fafc'));
+  }
 
   // Experience expand/collapse
   document.querySelectorAll('.exp-card').forEach((card) => {
