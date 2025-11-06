@@ -197,7 +197,10 @@
           // bounce jeep and create transient ripple near active dot
           if (jeep) {
             jeep.classList.remove('bounce');
+            jeep.classList.remove('tilt-left');
+            jeep.classList.remove('tilt-right');
             void jeep.offsetWidth; // reflow
+            if (Math.random() > 0.5) { jeep.classList.add('tilt-left'); } else { jeep.classList.add('tilt-right'); }
             jeep.classList.add('bounce');
           }
           const activeDot = dots[idx];
@@ -210,6 +213,12 @@
             ripple.style.top = topVal;
             document.querySelector('.roadmap')?.appendChild(ripple);
             ripple.addEventListener('animationend', () => ripple.remove());
+            // dust puff
+            const dust = document.createElement('span');
+            dust.className = 'dust';
+            dust.style.top = topVal;
+            document.querySelector('.roadmap')?.appendChild(dust);
+            dust.addEventListener('animationend', () => dust.remove());
           }
         }
       }
