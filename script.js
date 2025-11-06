@@ -181,6 +181,7 @@
   ].filter(Boolean);
   const dots = Array.from(document.querySelectorAll('.roadmap .road-dot'));
   const jeep = document.querySelector('.roadmap .road-jeep');
+  const stars = Array.from(document.querySelectorAll('.constellation .star'));
 
   // Scroll observer to set active
   const activeObserver = new IntersectionObserver((entries) => {
@@ -220,6 +221,14 @@
             document.querySelector('.roadmap')?.appendChild(dust);
             dust.addEventListener('animationend', () => dust.remove());
           }
+          // Constellation: activate matching star, twinkle
+          const activeStar = stars[idx];
+          stars.forEach((s, i) => s.classList.toggle('active', i === idx));
+          if (activeStar) {
+            activeStar.classList.remove('twinkle');
+            void activeStar.offsetWidth;
+            activeStar.classList.add('twinkle');
+          }
         }
       }
     });
@@ -231,6 +240,15 @@
   dots.forEach((dot, i) => {
     const targetSel = dot.getAttribute('data-target');
     dot.addEventListener('click', () => {
+      const target = targetSel ? document.querySelector(targetSel) : sections[i];
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // Constellation star click
+  stars.forEach((star, i) => {
+    const targetSel = star.getAttribute('data-target');
+    star.addEventListener('click', () => {
       const target = targetSel ? document.querySelector(targetSel) : sections[i];
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
