@@ -15,6 +15,17 @@
     <!-- THEME RIPPLE CONTAINER -->
     <div id="ripple-root" aria-hidden="true"></div>
 
+    <!-- LEFT ROADMAP RAIL (wayfinding) -->
+    <aside class="roadmap" aria-hidden="true">
+      <div class="road"></div>
+      <button class="road-dot" data-target="#home" aria-label="Go to Home"></button>
+      <button class="road-dot" data-target="#about" aria-label="Go to About"></button>
+      <button class="road-dot" data-target="#experience" aria-label="Go to Experience"></button>
+      <button class="road-dot" data-target="#referees" aria-label="Go to Referees"></button>
+      <button class="road-dot" data-target="#contact" aria-label="Go to Contact"></button>
+      <span class="road-jeep" aria-hidden="true"></span>
+    </aside>
+
     <!-- HEADER -->
     <header class="site-header reveal" id="top">
       <div class="container header-inner">
@@ -40,7 +51,7 @@
 
     <main>
       <!-- HERO -->
-      <section id="home" class="section hero-section reveal">
+      <section id="home" class="section hero-section reveal" data-anim="fade-right">
         <div class="container hero-grid">
           <div class="hero-media">
             <img src="./assets/hero/profile.jpg" alt="Portrait of Eliud" class="hero-img" width="900" height="1100" />
@@ -51,14 +62,14 @@
             <p class="hero-tagline">I map dreams to journeys, code visions to clicks — rhythm in strategy, harmony in pixels, momentum in the market.</p>
             <div class="hero-ctas">
               <a class="btn btn-primary" href="./assets/Neboh_CV.pdf" target="_blank" rel="noopener">Download CV</a>
-              <a class="btn btn-ghost" href="https://wa.me/255621671652" target="_blank" rel="noopener">Let’s Talk</a>
+              <a class="btn btn-ghost" href="https://wa.me/000000000000" target="_blank" rel="noopener">Let’s Talk</a>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ABOUT -->
-      <section id="about" class="section reveal">
+      <section id="about" class="section reveal" data-anim="fade-up">
         <div class="container">
           <div class="section-head">
             <h2 class="section-title neon">About</h2>
@@ -66,12 +77,12 @@
           </div>
           <div class="about-grid">
             <p class="about-story card glass">
-              I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution so every click feels natural and every journey feels memorable.
+              I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution — so every click feels natural and every journey feels memorable.
             </p>
             <div class="values-grid">
               <article class="card glass value">
                 <h3>Creativity</h3>
-                <p>Original concepts with measurable outcomes ideas that travel further.</p>
+                <p>Original concepts with measurable outcomes — ideas that travel further.</p>
               </article>
               <article class="card glass value">
                 <h3>Reliability</h3>
@@ -87,7 +98,7 @@
       </section>
 
       <!-- EXPERIENCE -->
-      <section id="experience" class="section reveal">
+      <section id="experience" class="section reveal" data-anim="fade-left">
         <div class="container">
           <div class="section-head">
             <h2 class="section-title neon">Experience</h2>
@@ -150,7 +161,7 @@
       </section>
 
       <!-- REFEREES / TESTIMONIALS -->
-      <section id="referees" class="section reveal">
+      <section id="referees" class="section reveal" data-anim="scale-in">
         <div class="container">
           <div class="section-head">
             <h2 class="section-title neon">Referees</h2>
@@ -162,10 +173,10 @@
               <div class="ref-header">
                 <img src="./assets/refs/ref1.jpg" alt="Referee 1" class="ref-avatar" width="320" height="320" loading="lazy" />
                 <div>
-                  <h3 class="ref-name">Abuu Karata</h3>
-                  <p class="ref-role">General Manager, Airport Planet Lodge</p>
+                  <h3 class="ref-name">Jane Mwangi</h3>
+                  <p class="ref-role">Brand Lead, Savannah Collective</p>
                 </div>
-                <a class="wa" href="https://wa.me/255753046214" target="_blank" rel="noopener" aria-label="WhatsApp Abuu">
+                <a class="wa" href="https://wa.me/254700000001" target="_blank" rel="noopener" aria-label="WhatsApp Jane">
                   <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
                 </a>
               </div>
@@ -176,11 +187,11 @@
             <article class="card glass ref-card">
               <div class="ref-header">
                 <img src="./assets/refs/ref2.jpg" alt="Referee 2" class="ref-avatar" width="320" height="320" loading="lazy" />
-                <div>     
-                  <h3 class="ref-name">Alex Benson Sichona</h3>
-                  <p class="ref-role">Ass. Lecturer, University of Dar es Salaam</p>
+                <div>
+                  <h3 class="ref-name">David Okoro</h3>
+                  <p class="ref-role">Head of Growth, Coastline Ventures</p>
                 </div>
-                <a class="wa" href="https://wa.me/255715224274" target="_blank" rel="noopener" aria-label="WhatsApp Alex">
+                <a class="wa" href="https://wa.me/254700000002" target="_blank" rel="noopener" aria-label="WhatsApp David">
                   <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
                 </a>
               </div>
@@ -192,10 +203,10 @@
               <div class="ref-header">
                 <img src="./assets/refs/ref3.jpg" alt="Referee 3" class="ref-avatar" width="320" height="320" loading="lazy" />
                 <div>
-               <h3 class="ref-name">Maria Donath Labila</h3>
-                <p class="ref-role">Tour Operator, Tupande Usambara Cultural Tour</p>
+                  <h3 class="ref-name">Sasha Karim</h3>
+                  <p class="ref-role">Producer, Atlas Creative</p>
                 </div>
-                <a class="wa" href="https://wa.me/255763021922" target="_blank" rel="noopener" aria-label="WhatsApp Maria">
+                <a class="wa" href="https://wa.me/254700000003" target="_blank" rel="noopener" aria-label="WhatsApp Sasha">
                   <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
                 </a>
               </div>
@@ -206,11 +217,11 @@
       </section>
 
       <!-- CONTACT ICONS ROW -->
-      <section id="contact" class="section reveal">
+      <section id="contact" class="section reveal" data-anim="fade-up">
         <div class="container">
           <div class="section-head">
             <h2 class="section-title neon">Contact</h2>
-            <p class="section-sub">Let's connect</p>
+            <p class="section-sub">Icons only — tap to connect</p>
           </div>
 
           <div class="contact-row">
@@ -240,8 +251,8 @@
             <p class="coffee-text">Let’s talk business, web, tourism and ideas. Book a coffee meeting.</p>
           </div>
           <div class="coffee-actions">
-            <a class="btn btn-primary" href="https://wa.me/255621671652" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn btn-ghost" href="https://cal.com/eliud.mchome/30min?" target="_blank" rel="noopener">Book on Cal.com</a>
+            <a class="btn btn-primary" href="https://wa.me/000000000000" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn btn-ghost" href="https://cal.com/placeholder/coffee" target="_blank" rel="noopener">Book on Cal.com</a>
           </div>
         </div>
         <div class="legal">
