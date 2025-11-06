@@ -370,6 +370,31 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
 .road-dot { position: absolute; left: 4px; width: 20px; height: 20px; border-radius: 50%; border: 1px solid var(--card-border); background: var(--btn-bg); cursor: pointer; transition: box-shadow 200ms ease, transform 160ms ease, border-color 200ms ease; }
 .road-dot:hover { box-shadow: var(--glow); transform: translateY(-1px); border-color: var(--accent); }
 .road-dot.active { box-shadow: var(--glow); border-color: var(--accent); }
+.road-dot.active::after {
+  content: ""; position: absolute; inset: -6px; border-radius: 50%;
+  border: 2px solid var(--accent-2); opacity: .8; pointer-events: none;
+  animation: road-ping 1000ms ease-out forwards;
+}
+.road-ripple {
+  position: absolute; left: 0; right: 0; margin: 0 auto; width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--accent-2); opacity: .6; pointer-events: none;
+  animation: road-ripple 800ms ease-out forwards;
+}
+.road-jeep { position: absolute; left: 8px; width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, var(--accent-2), var(--accent)); box-shadow: var(--glow); transform: translateY(-50%); top: var(--jeep-y, 6%); transition: top 380ms cubic-bezier(.2,.7,.2,1); }
+.road-jeep.bounce { animation: jeep-bounce 600ms cubic-bezier(.2,.9,.2,1); }
+.road-jeep.tilt-left { transform: translateY(-50%) rotate(-8deg); }
+.road-jeep.tilt-right { transform: translateY(-50%) rotate(8deg); }
+
+@keyframes road-ping { 0% { transform: scale(.85); opacity: .9; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes road-ripple { 0% { transform: translateY(-50%) scale(.9); opacity: .7; } 100% { transform: translateY(-50%) scale(1.8); opacity: 0; } }
+@keyframes jeep-bounce { 0% { transform: translateY(calc(-50% + 0px)); } 35% { transform: translateY(calc(-50% - 6px)); } 100% { transform: translateY(calc(-50% + 0px)); } }
+
+/* Section themed rail effects */
+html[data-active-section='home'] .roadmap .road { filter: drop-shadow(0 0 10px var(--accent)); }
+html[data-active-section='about'] .roadmap .road { background-image: repeating-linear-gradient(180deg, rgba(255,70,198,0.45) 0 12px, transparent 12px 22px); }
+html[data-active-section='experience'] .roadmap .road { background-image: repeating-linear-gradient(180deg, rgba(0,245,160,0.45) 0 12px, transparent 12px 22px); }
+html[data-active-section='referees'] .roadmap .road { background-image: repeating-linear-gradient(180deg, rgba(255,138,0,0.45) 0 12px, transparent 12px 22px); }
+html[data-active-section='contact'] .roadmap .road { background-image: repeating-linear-gradient(180deg, rgba(114,221,255,0.5) 0 12px, transparent 12px 22px); }
 .roadmap .road-dot:nth-of-type(2) { top: 6%; }
 .roadmap .road-dot:nth-of-type(3) { top: 26%; }
 .roadmap .road-dot:nth-of-type(4) { top: 50%; }
