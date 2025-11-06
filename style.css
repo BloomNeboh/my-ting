@@ -192,6 +192,53 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
 .value h3 { margin: 2px 0 6px; }
 .value p { margin: 0; color: var(--muted); }
 
+/* About card animations */
+.about-story,
+.values-grid .value {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 260ms cubic-bezier(.2,.7,.2,1), box-shadow 280ms ease, border-color 220ms ease;
+}
+.values-grid .value:hover { transform: translateY(-6px) scale(1.01); box-shadow: var(--glow); }
+.about-story:hover { transform: translateY(-4px); box-shadow: var(--glow); }
+
+/* Animated sheen border */
+.values-grid .value::before,
+.about-story::before {
+  content: "";
+  position: absolute; inset: -1px; border-radius: var(--radius);
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.12) 90deg, transparent 180deg);
+  mix-blend-mode: screen; pointer-events: none;
+  animation: sheen-rotate 8s linear infinite;
+  opacity: .35;
+}
+.values-grid .value::after,
+.about-story::after {
+  content: "";
+  position: absolute; inset: 0; border-radius: var(--radius);
+  background: radial-gradient(220px 120px at var(--mx, 20%) var(--my, 20%), rgba(255,255,255,0.06), transparent 60%);
+  pointer-events: none; transition: opacity 240ms ease;
+  opacity: .0;
+}
+.values-grid .value:hover::after, .about-story:hover::after { opacity: .9; }
+
+@keyframes sheen-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Staggered reveal for values */
+.values-grid .value { transition-delay: 0ms; }
+.values-grid .value:nth-child(1) { transition-delay: 40ms; }
+.values-grid .value:nth-child(2) { transition-delay: 90ms; }
+.values-grid .value:nth-child(3) { transition-delay: 140ms; }
+
+/* Pointer tracking for highlight (fallback: defaults set in :after) */
+.values-grid .value,
+.about-story { --mx: 20%; --my: 20%; }
+
+
 /* EXPERIENCE */
 .exp-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 700px) { .exp-grid { grid-template-columns: repeat(2, 1fr); } }
