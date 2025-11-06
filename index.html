@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="theme-color" content="#0b0f14" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -21,7 +22,8 @@
           <span class="brand-word">Eliud</span><span class="brand-accent">M</span>
         </a>
 
-        <nav class="nav" aria-label="Primary">
+        <button id="menuToggle" class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav"></button>
+        <nav id="primaryNav" class="nav" aria-label="Primary">
           <a href="#home" class="nav-link">Home</a>
           <a href="#about" class="nav-link">About</a>
           <a href="#experience" class="nav-link">Experience</a>
@@ -41,7 +43,7 @@
       <section id="home" class="section hero-section reveal">
         <div class="container hero-grid">
           <div class="hero-media">
-            <img src="./assets/hero/profile.jpg" alt="Portrait of Eliud" class="hero-img" />
+            <img src="./assets/hero/profile.jpg" alt="Portrait of Eliud" class="hero-img" width="900" height="1100" />
           </div>
           <div class="hero-copy">
             <h1 class="hero-title neon">Hey, I'm Eliud</h1>
@@ -49,7 +51,7 @@
             <p class="hero-tagline">I map dreams to journeys, code visions to clicks — rhythm in strategy, harmony in pixels, momentum in the market.</p>
             <div class="hero-ctas">
               <a class="btn btn-primary" href="./assets/Neboh_CV.pdf" target="_blank" rel="noopener">Download CV</a>
-              <a class="btn btn-ghost" href="https://wa.me/000000000000" target="_blank" rel="noopener">Let’s Talk</a>
+              <a class="btn btn-ghost" href="https://wa.me/255621671652" target="_blank" rel="noopener">Let’s Talk</a>
             </div>
           </div>
         </div>
@@ -64,12 +66,12 @@
           </div>
           <div class="about-grid">
             <p class="about-story card glass">
-              I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution — so every click feels natural and every journey feels memorable.
+              I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution so every click feels natural and every journey feels memorable.
             </p>
             <div class="values-grid">
               <article class="card glass value">
                 <h3>Creativity</h3>
-                <p>Original concepts with measurable outcomes — ideas that travel further.</p>
+                <p>Original concepts with measurable outcomes ideas that travel further.</p>
               </article>
               <article class="card glass value">
                 <h3>Reliability</h3>
@@ -156,14 +158,14 @@
           </div>
           <div class="refs-grid">
             <!-- Example 1 -->
-           <article class="card glass ref-card">
+            <article class="card glass ref-card">
               <div class="ref-header">
-                <img src="./assets/refs/ref1.jpg" alt="Referee 1" class="ref-avatar" />
+                <img src="./assets/refs/ref1.jpg" alt="Referee 1" class="ref-avatar" width="320" height="320" loading="lazy" />
                 <div>
                   <h3 class="ref-name">Abuu Karata</h3>
                   <p class="ref-role">General Manager, Airport Planet Lodge</p>
                 </div>
-                <a class="wa" href="https://wa.me/255753046214" target="_blank" rel="noopener" aria-label="WhatsApp Jane">
+                <a class="wa" href="https://wa.me/255753046214" target="_blank" rel="noopener" aria-label="WhatsApp Abuu">
                   <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
                 </a>
               </div>
@@ -173,12 +175,12 @@
             <!-- Example 2 -->
             <article class="card glass ref-card">
               <div class="ref-header">
-                <img src="./assets/refs/ref2.jpg" alt="Referee 2" class="ref-avatar" />
-                <div>
+                <img src="./assets/refs/ref2.jpg" alt="Referee 2" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div>     
                   <h3 class="ref-name">Alex Benson Sichona</h3>
                   <p class="ref-role">Ass. Lecturer, University of Dar es Salaam</p>
                 </div>
-                <a class="wa" href="https://wa.me/255715224274" target="_blank" rel="noopener" aria-label="WhatsApp David">
+                <a class="wa" href="https://wa.me/255715224274" target="_blank" rel="noopener" aria-label="WhatsApp Alex">
                   <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
                 </a>
               </div>
@@ -188,12 +190,12 @@
             <!-- Example 3 -->
             <article class="card glass ref-card">
               <div class="ref-header">
-                <img src="./assets/refs/ref3.jpg" alt="Referee 3" class="ref-avatar" />
+                <img src="./assets/refs/ref3.jpg" alt="Referee 3" class="ref-avatar" width="320" height="320" loading="lazy" />
                 <div>
-                  <h3 class="ref-name">Maria Donath Labila</h3>
-                  <p class="ref-role">Tour Operator, Tupande Usambara Cultural Tour</p>
+               <h3 class="ref-name">Maria Donath Labila</h3>
+                <p class="ref-role">Tour Operator, Tupande Usambara Cultural Tour</p>
                 </div>
-                <a class="wa" href="https://wa.me/255763021922" target="_blank" rel="noopener" aria-label="WhatsApp Sasha">
+                <a class="wa" href="https://wa.me/255763021922" target="_blank" rel="noopener" aria-label="WhatsApp Maria">
                   <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
                 </a>
               </div>
@@ -202,20 +204,20 @@
           </div>
         </div>
       </section>
-      
+
       <!-- CONTACT ICONS ROW -->
       <section id="contact" class="section reveal">
         <div class="container">
           <div class="section-head">
             <h2 class="section-title neon">Contact</h2>
-            <p class="section-sub">Let"s connect</p>
+            <p class="section-sub">Let's connect</p>
           </div>
 
           <div class="contact-row">
-            <a href="mailto:ellymchome503@gmail.com" class="icon-link" target="_blank" rel="noopener" aria-label="Email">
+            <a href="mailto:placeholder@example.com" class="icon-link" target="_blank" rel="noopener" aria-label="Email">
               <img src="./assets/logos/email.png" alt="Email" />
             </a>
-            <a href="https://wa.me/255621671652" class="icon-link" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <a href="https://wa.me/000000000000" class="icon-link" target="_blank" rel="noopener" aria-label="WhatsApp">
               <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
             </a>
             <a href="https://facebook.com/placeholder" class="icon-link" target="_blank" rel="noopener" aria-label="Facebook">
@@ -239,7 +241,7 @@
           </div>
           <div class="coffee-actions">
             <a class="btn btn-primary" href="https://wa.me/255621671652" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn btn-ghost" href="https://cal.com/eliud.mchome/30min target="_blank" rel="noopener">Book on Cal.com</a>
+            <a class="btn btn-ghost" href="https://cal.com/eliud.mchome/30min?" target="_blank" rel="noopener">Book on Cal.com</a>
           </div>
         </div>
         <div class="legal">
