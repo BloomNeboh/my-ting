@@ -34,12 +34,9 @@ A modern, responsive portfolio for Eliud — Tourism Marketing Manager & Web Dev
 - Scroll-triggered fade-in animations
 - Smooth scrolling navigation
 - Responsive across mobile, tablet, and desktop
-- Icons-only Contact section with glow hover
 - Coffee Chat footer CTA (WhatsApp + cal.com)
 
 ## Credits
-- Fonts: Poppins & Inter via Google Fonts.
-- Icons: Placeholder PNGs expected in `assets/logos/` (provide your own or from reputable sources).
 - Inspiration: Behance-level personal portfolio styles.
 
 ## License
