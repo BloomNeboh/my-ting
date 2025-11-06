@@ -191,6 +191,26 @@
           dots.forEach((d, i) => d.classList.toggle('active', i === idx));
           const positions = [ '6%', '26%', '50%', '74%', '92%' ];
           docEl.style.setProperty('--jeep-y', positions[idx] || '6%');
+          // set active-section for themed rail
+          const secId = entry.target.id;
+          if (secId) docEl.setAttribute('data-active-section', secId);
+          // bounce jeep and create transient ripple near active dot
+          if (jeep) {
+            jeep.classList.remove('bounce');
+            void jeep.offsetWidth; // reflow
+            jeep.classList.add('bounce');
+          }
+          const activeDot = dots[idx];
+          if (activeDot) {
+            const ripple = document.createElement('span');
+            ripple.className = 'road-ripple';
+            // position ripple centered on the active dot row
+            const dotTop = activeDot.style.top || window.getComputedStyle(activeDot).top;
+            const topVal = dotTop && dotTop !== 'auto' ? dotTop : positions[idx];
+            ripple.style.top = topVal;
+            document.querySelector('.roadmap')?.appendChild(ripple);
+            ripple.addEventListener('animationend', () => ripple.remove());
+          }
         }
       }
     });
