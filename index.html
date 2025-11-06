@@ -16,25 +16,33 @@
     <div id="ripple-root" aria-hidden="true"></div>
 
     <!-- LEFT ROADMAP RAIL (wayfinding) -->
-    <aside class="roadmap" aria-hidden="true">
-      <div class="road">
-        <span class="road-edge left"></span>
-        <span class="road-center"></span>
-        <span class="road-edge right"></span>
-      </div>
-      <button class="road-dot" data-target="#home" aria-label="Go to Home"></button>
-      <button class="road-dot" data-target="#about" aria-label="Go to About"></button>
-      <button class="road-dot" data-target="#experience" aria-label="Go to Experience"></button>
-      <button class="road-dot" data-target="#referees" aria-label="Go to Referees"></button>
-      <button class="road-dot" data-target="#contact" aria-label="Go to Contact"></button>
-      <svg class="road-jeep" aria-hidden="true" viewBox="0 0 48 32" width="24" height="16">
-        <g fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="6" y="10" width="26" height="10" rx="2" ry="2" fill="currentColor" opacity="0.12"></rect>
-          <rect x="18" y="6" width="14" height="8" rx="2" ry="2" fill="currentColor" opacity="0.18"></rect>
-          <circle cx="14" cy="24" r="4" fill="currentColor"></circle>
-          <circle cx="30" cy="24" r="4" fill="currentColor"></circle>
-          <path d="M4 22 L42 22" opacity="0.3"></path>
-          <path d="M8 20 L8 14 L16 14" opacity="0.6"></path>
+    <aside class="constellation" aria-hidden="true">
+      <svg class="stars" viewBox="0 0 80 600" preserveAspectRatio="xMidYMin slice" width="42" height="100%">
+        <!-- Lines (connections) -->
+        <line x1="40" y1="50" x2="40" y2="170" class="link" />
+        <line x1="40" y1="170" x2="40" y2="300" class="link" />
+        <line x1="40" y1="300" x2="40" y2="430" class="link" />
+        <line x1="40" y1="430" x2="40" y2="560" class="link" />
+        <!-- Stars (one per section) -->
+        <g class="star" data-target="#home" transform="translate(40,50)">
+          <circle r="4" class="core" />
+          <circle r="8" class="glow" />
+        </g>
+        <g class="star" data-target="#about" transform="translate(40,170)">
+          <circle r="4" class="core" />
+          <circle r="8" class="glow" />
+        </g>
+        <g class="star" data-target="#experience" transform="translate(40,300)">
+          <circle r="4" class="core" />
+          <circle r="8" class="glow" />
+        </g>
+        <g class="star" data-target="#referees" transform="translate(40,430)">
+          <circle r="4" class="core" />
+          <circle r="8" class="glow" />
+        </g>
+        <g class="star" data-target="#contact" transform="translate(40,560)">
+          <circle r="4" class="core" />
+          <circle r="8" class="glow" />
         </g>
       </svg>
     </aside>
