@@ -157,6 +157,20 @@
     meta.setAttribute('content', bg || (currentTheme() === 'dark' ? '#0b0f14' : '#f7fafc'));
   }
 
+  // Pointer tracking for about-card highlight
+  function attachPointerHighlight(selector) {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        el.style.setProperty('--mx', `${x}%`);
+        el.style.setProperty('--my', `${y}%`);
+      });
+    });
+  }
+  attachPointerHighlight('.values-grid .value, .about-story');
+
   // Experience expand/collapse
   document.querySelectorAll('.exp-card').forEach((card) => {
     const btn = card.querySelector('.exp-toggle');
