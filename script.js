@@ -171,6 +171,42 @@
   }
   attachPointerHighlight('.values-grid .value, .about-story');
 
+  // Roadmap: active section + moving indicator
+  const sections = [
+    document.getElementById('home'),
+    document.getElementById('about'),
+    document.getElementById('experience'),
+    document.getElementById('referees'),
+    document.getElementById('contact'),
+  ].filter(Boolean);
+  const dots = Array.from(document.querySelectorAll('.roadmap .road-dot'));
+  const jeep = document.querySelector('.roadmap .road-jeep');
+
+  // Scroll observer to set active
+  const activeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target);
+        if (idx >= 0) {
+          dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+          const positions = [ '6%', '26%', '50%', '74%', '92%' ];
+          docEl.style.setProperty('--jeep-y', positions[idx] || '6%');
+        }
+      }
+    });
+  }, { threshold: 0.52 });
+
+  sections.forEach((sec) => activeObserver.observe(sec));
+
+  // Click to scroll
+  dots.forEach((dot, i) => {
+    const targetSel = dot.getAttribute('data-target');
+    dot.addEventListener('click', () => {
+      const target = targetSel ? document.querySelector(targetSel) : sections[i];
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   // Experience expand/collapse
   document.querySelectorAll('.exp-card').forEach((card) => {
     const btn = card.querySelector('.exp-toggle');
