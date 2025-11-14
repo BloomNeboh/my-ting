@@ -1,10 +1,11 @@
-/*
-  Eliud — Portfolio Styles (Enhanced with Eye-Catching Animations)
-  - Dark futuristic UI with neon accents
-  - Glassmorphism cards, gradients, scroll animations
-  - Light/Dark theme via [data-theme]
-  - Accent cycles: neon blue / green / orange / pink
-  - Mobile menu, constellation path, section reveal variants, reduced motion
+/* Small-screen performance: soften glows */
+@media (max-width: 640px) { 
+  :root { --glow: 0 0 18px rgba(76, 201, 255, 0.45), 0 0 28px rgba(76, 201, 255, 0.2); }
+  .cursor, .cursor-follower, .cursor-trail { display: none; }
+  body { cursor: auto; }
+  #grid-canvas { display: none; }
+  #mouse-trail { display: none; }
+}educed motion
   - NEW: Particle background, custom cursor, floating animations, pulse effects, shimmer, parallax
 */
 
@@ -91,6 +92,53 @@ a { color: inherit; text-decoration: none; }
 
 .neon { text-shadow: var(--glow); color: var(--accent-2); }
 
+/* HOLOGRAPHIC GRID BACKGROUND */
+#grid-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+}
+
+/* MOUSE TRAIL */
+#mouse-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9997;
+  overflow: hidden;
+}
+
+.trail-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 8px var(--accent-2);
+  pointer-events: none;
+  animation: trail-fade 0.8s ease-out forwards;
+}
+
+@keyframes trail-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
 /* CUSTOM CURSOR */
 .cursor {
   position: fixed;
@@ -119,8 +167,22 @@ a { color: inherit; text-decoration: none; }
   opacity: 0.4;
 }
 
+.cursor-trail {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--accent-2);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9996;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  opacity: 0.2;
+}
+
 body:hover .cursor { opacity: 1; }
 body:hover .cursor-follower { opacity: 0.4; }
+body:hover .cursor-trail { opacity: 0.2; }
 
 a:hover ~ .cursor,
 button:hover ~ .cursor,
@@ -137,6 +199,13 @@ button:hover ~ .cursor-follower,
   height: 48px;
   border-color: var(--accent-2);
   opacity: 0.6;
+}
+
+.cursor-trail.hover {
+  width: 30px;
+  height: 30px;
+  border-color: var(--accent);
+  opacity: 0.4;
 }
 
 /* PARTICLE BACKGROUND */
@@ -348,6 +417,70 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   font-size: clamp(32px, 4vw, 48px); 
   margin: 0 0 8px;
   animation: title-glow 3s ease-in-out infinite;
+  position: relative;
+}
+
+/* TEXT REVEAL ANIMATION */
+.text-reveal {
+  overflow: hidden;
+}
+
+.text-reveal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  transform: translateX(-100%);
+  animation: text-reveal-slide 1.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  z-index: 1;
+}
+
+@keyframes text-reveal-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* TEXT GRADIENT EFFECT */
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* TEXT SPLIT ANIMATION */
+.text-split {
+  position: relative;
+  overflow: hidden;
+}
+
+.text-split::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%);
+  animation: text-split-shine 3s infinite;
+}
+
+@keyframes text-split-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
 }
 
 @keyframes title-glow {
@@ -457,6 +590,13 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   transition: border-color 180ms ease, box-shadow 240ms ease, transform 180ms ease;
   position: relative;
   overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
 }
 
 .card.glass::before {
@@ -486,6 +626,34 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   border-color: var(--accent); 
   box-shadow: var(--glow); 
   transform: translateY(-4px) scale(1.02);
+}
+
+/* MAGNETIC 3D EFFECT */
+.magnetic-3d {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.magnetic-3d:hover {
+  transform: translateY(-8px) rotateX(5deg) rotateY(5deg) scale(1.03);
+}
+
+.magnetic-3d .card-inner {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.magnetic-3d:hover .card-inner {
+  transform: translateZ(20px);
+}
+
+/* MAGNETIC BUTTON EFFECT */
+.magnetic {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.magnetic:hover {
+  transform: scale(1.05);
 }
 
 /* Floating Card Animation */
@@ -971,6 +1139,89 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
 @keyframes star-pulse { 0% { r: 8; opacity: .7; } 100% { r: 16; opacity: 0; } }
 @keyframes twinkle { 0%, 100% { filter: drop-shadow(0 0 8px var(--accent)); } 50% { filter: drop-shadow(0 0 16px var(--accent)); } }
 
+/* PARTICLE CONNECTIONS */
+.particle-connection {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-2), transparent);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: connection-pulse 2s ease-in-out infinite;
+}
+
+@keyframes connection-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
+
+/* MORPHING SHAPES */
+.morph-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-2), transparent);
+  opacity: 0.1;
+  animation: morph 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes morph {
+  0%, 100% {
+    border-radius: 50% 40% 60% 30%;
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    border-radius: 60% 50% 40% 50%;
+    transform: scale(1.1) rotate(90deg);
+  }
+  50% {
+    border-radius: 40% 60% 50% 40%;
+    transform: scale(0.9) rotate(180deg);
+  }
+  75% {
+    border-radius: 50% 40% 60% 50%;
+    transform: scale(1.05) rotate(270deg);
+  }
+}
+
+/* ADVANCED SCROLL EFFECTS */
+.scroll-reveal-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.scroll-reveal-3d.is-visible {
+  transform: translateZ(0) rotateX(0deg);
+}
+
+/* HOLOGRAPHIC EFFECT */
+.holographic {
+  position: relative;
+  overflow: hidden;
+}
+
+.holographic::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  animation: holographic-sweep 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes holographic-sweep {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal { transition: none; opacity: 1; transform: none; }
@@ -979,13 +1230,17 @@ html[data-theme='light'] .theme-toggle .moon { opacity: 1; transform: rotate(0de
   .floating-text, .card-float, .value-card-1, .value-card-2, .value-card-3,
   .exp-card-1, .exp-card-2, .exp-card-3, .ref-card-1, .ref-card-2, .ref-card-3,
   .icon-link-1, .icon-link-2, .icon-link-3, .icon-link-4 { animation: none; }
-  .cursor, .cursor-follower { display: none; }
+  .cursor, .cursor-follower, .cursor-trail { display: none; }
   body { cursor: auto; }
+  .magnetic-3d, .magnetic { transition: none; }
+  .text-reveal::before, .text-split::after { animation: none; }
 }
 
 /* Small-screen performance: soften glows */
 @media (max-width: 640px) { 
   :root { --glow: 0 0 18px rgba(76, 201, 255, 0.45), 0 0 28px rgba(76, 201, 255, 0.2); }
-  .cursor, .cursor-follower { display: none; }
+  .cursor, .cursor-follower, .cursor-trail { display: none; }
   body { cursor: auto; }
+  #grid-canvas { display: none; }
+  #mouse-trail { display: none; }
 }
