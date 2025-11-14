@@ -15,6 +15,13 @@
     <!-- THEME RIPPLE CONTAINER -->
     <div id="ripple-root" aria-hidden="true"></div>
 
+    <!-- PARTICLE BACKGROUND -->
+    <div id="particles" aria-hidden="true"></div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor" aria-hidden="true"></div>
+    <div class="cursor-follower" aria-hidden="true"></div>
+
     <!-- LEFT ROADMAP RAIL (wayfinding) -->
     <aside class="constellation" aria-hidden="true">
       <svg class="stars" viewBox="0 0 80 600" preserveAspectRatio="xMidYMin slice" width="42" height="100%">
@@ -75,15 +82,18 @@
       <section id="home" class="section hero-section reveal" data-anim="fade-right">
         <div class="container hero-grid">
           <div class="hero-media">
-            <img src="./assets/hero/eliud.jpg" alt="Portrait of Eliud" class="hero-img" width="900" height="1100" />
+            <div class="hero-img-wrapper">
+              <img src="./assets/hero/eliud.jpg" alt="Portrait of Eliud" class="hero-img" width="900" height="1100" />
+              <div class="hero-glow"></div>
+            </div>
           </div>
           <div class="hero-copy">
-            <h1 class="hero-title neon">Hey, I'm Eliud</h1>
-            <p class="hero-role">Tourism Marketing Manager & Web Developer</p>
+            <h1 class="hero-title neon floating-text">Hey, I'm Eliud</h1>
+            <p class="hero-role typewriter">Tourism Marketing Manager & Web Developer</p>
             <p class="hero-tagline">I map dreams to journeys, code visions to clicks rhythm in strategy, harmony in pixels, momentum in the market.</p>
             <div class="hero-ctas">
-              <a class="btn btn-primary" href="./assets/neboh cv.pdf" target="_blank" rel="noopener">Download CV</a>
-              <a class="btn btn-ghost" href="https://wa.me/255621671652" target="_blank" rel="noopener">Let’s Talk</a>
+              <a class="btn btn-primary btn-pulse" href="./assets/neboh cv.pdf" target="_blank" rel="noopener">Download CV</a>
+              <a class="btn btn-ghost btn-shimmer" href="https://wa.me/255621671652" target="_blank" rel="noopener">Let's Talk</a>
             </div>
           </div>
         </div>
@@ -97,19 +107,19 @@
             <p class="section-sub">A curious builder at the intersection of tourism, brand, and code.</p>
           </div>
           <div class="about-grid">
-            <p class="about-story card glass">
+            <p class="about-story card glass card-float">
               I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution — so every click feels natural and every journey feels memorable.
             </p>
             <div class="values-grid">
-              <article class="card glass value">
+              <article class="card glass value value-card-1">
                 <h3>Creativity</h3>
                 <p>Original concepts with measurable outcomes — ideas that travel further.</p>
               </article>
-              <article class="card glass value">
+              <article class="card glass value value-card-2">
                 <h3>Reliability</h3>
                 <p>Clear comms, tight delivery, and ownership from brief to ship.</p>
               </article>
-              <article class="card glass value">
+              <article class="card glass value value-card-3">
                 <h3>Digital Excellence</h3>
                 <p>Performance-first design, clean code, and systems that scale.</p>
               </article>
@@ -126,7 +136,7 @@
             <p class="section-sub">Selected roles and outcomes</p>
           </div>
           <div class="exp-grid">
-            <article class="card glass exp-card" data-expanded="false">
+            <article class="card glass exp-card exp-card-1" data-expanded="false">
               <h3>Tourism Marketing</h3>
               <ul>
                 <li>Designed destination campaigns increasing inquiries and bookings.</li>
@@ -143,7 +153,7 @@
               </div>
               <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-1">Read more</button>
             </article>
-            <article class="card glass exp-card" data-expanded="false">
+            <article class="card glass exp-card exp-card-2" data-expanded="false">
               <h3>Web Development & Branding Projects</h3>
               <ul>
                 <li>Shipped responsive websites with modern stacks and SEO foundations.</li>
@@ -160,7 +170,7 @@
               </div>
               <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-2">Read more</button>
             </article>
-            <article class="card glass exp-card" data-expanded="false">
+            <article class="card glass exp-card exp-card-3" data-expanded="false">
               <h3>Content Creation</h3>
               <ul>
                 <li>Produced multimedia stories highlighting local culture and value.</li>
@@ -190,9 +200,12 @@
           </div>
           <div class="refs-grid">
             <!-- Example 1 -->
-            <article class="card glass ref-card">
+            <article class="card glass ref-card ref-card-1">
               <div class="ref-header">
-                <img src="./assets/refs/abuu.jpg" alt="Referee 1" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div class="ref-avatar-wrapper">
+                  <img src="./assets/refs/abuu.jpg" alt="Referee 1" class="ref-avatar" width="320" height="320" loading="lazy" />
+                  <div class="ref-avatar-glow"></div>
+                </div>
                 <div>
                  <h3 class="ref-name">Abuu Karata</h3>
                   <p class="ref-role">General Manager, Airport Planet Lodge</p>
@@ -205,9 +218,12 @@
             </article>
 
             <!-- Example 2 -->
-            <article class="card glass ref-card">
+            <article class="card glass ref-card ref-card-2">
               <div class="ref-header">
-                <img src="./assets/refs/benson.jpg" alt="Referee 2" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div class="ref-avatar-wrapper">
+                  <img src="./assets/refs/benson.jpg" alt="Referee 2" class="ref-avatar" width="320" height="320" loading="lazy" />
+                  <div class="ref-avatar-glow"></div>
+                </div>
                 <div>
                    <h3 class="ref-name">Alex Benson Sichona</h3>
                   <p class="ref-role">Ass. Lecturer, University of Dar es Salaam</p>
@@ -220,9 +236,12 @@
             </article>
 
             <!-- Example 3 -->
-            <article class="card glass ref-card">
+            <article class="card glass ref-card ref-card-3">
               <div class="ref-header">
-                <img src="./assets/refs/maria.jpg" alt="Referee 3" class="ref-avatar" width="320" height="320" loading="lazy" />
+                <div class="ref-avatar-wrapper">
+                  <img src="./assets/refs/maria.jpg" alt="Referee 3" class="ref-avatar" width="320" height="320" loading="lazy" />
+                  <div class="ref-avatar-glow"></div>
+                </div>
                 <div>
                  <h3 class="ref-name">Maria Donath Labila</h3>
                   <p class="ref-role">Tour Operator, Tupande Usambara Cultural Tour</p>
@@ -246,16 +265,16 @@
           </div>
 
           <div class="contact-row">
-            <a href="mailto:ellymchome503@gmail.com" class="icon-link" target="_blank" rel="noopener" aria-label="Email">
+            <a href="mailto:ellymchome503@gmail.com" class="icon-link icon-link-1" target="_blank" rel="noopener" aria-label="Email">
               <img src="./assets/logos/email.png" alt="Email" />
             </a>
-            <a href="https://wa.me/255621671652" class="icon-link" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <a href="https://wa.me/255621671652" class="icon-link icon-link-2" target="_blank" rel="noopener" aria-label="WhatsApp">
               <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
             </a>
-            <a href="https://www.facebook.com/share/14PNx8ayxLF/" class="icon-link" target="_blank" rel="noopener" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/14PNx8ayxLF/" class="icon-link icon-link-3" target="_blank" rel="noopener" aria-label="Facebook">
               <img src="./assets/logos/Facebook.png" alt="Facebook" />
             </a>
-            <a href="https://www.linkedin.com/in/eliud-mchome-a905902bb?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="icon-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/eliud-mchome-a905902bb?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="icon-link icon-link-4" target="_blank" rel="noopener" aria-label="LinkedIn">
               <img src="./assets/logos/linkedin.png" alt="LinkedIn" />
             </a>
           </div>
@@ -269,11 +288,11 @@
         <div class="coffee coffee-animated card glass">
           <div class="coffee-left">
             <span class="coffee-icon" aria-hidden="true"></span>
-            <p class="coffee-text">Let’s talk business, web, tourism and ideas. Book a coffee meeting.</p>
+            <p class="coffee-text">Let's talk business, web, tourism and ideas. Book a coffee meeting.</p>
           </div>
           <div class="coffee-actions">
-            <a class="btn btn-primary" href="https://wa.me/255621671652" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn btn-ghost" href="https://cal.com/eliud.mchome/30min?" target="_blank" rel="noopener">Book on Cal.com</a>
+            <a class="btn btn-primary btn-pulse" href="https://wa.me/255621671652" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn btn-ghost btn-shimmer" href="https://cal.com/eliud.mchome/30min?" target="_blank" rel="noopener">Book on Cal.com</a>
           </div>
         </div>
         <div class="legal">
@@ -285,6 +304,3 @@
     <script src="./script.js"></script>
   </body>
   </html>
-
-
-
