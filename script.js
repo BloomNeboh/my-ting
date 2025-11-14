@@ -409,8 +409,8 @@
     document.getElementById('about'),
     document.getElementById('experience'),
     document.getElementById('referees'),
-    document.getElementById('contact'),
     document.getElementById('email-form'),
+    document.getElementById('contact'),
   ].filter(Boolean);
   const stars = Array.from(document.querySelectorAll('.constellation .star'));
 
