@@ -1,28 +1,35 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eliud | Tourism Marketing Manager & Web Developer</title>
-    <meta name="description" content="Portfolio of Eliud — Tourism Marketing Manager & Web Developer. Projects, experience, referees, and contact." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <meta name="theme-color" content="#0b0f14" />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <!-- THEME RIPPLE CONTAINER -->
-    <div id="ripple-root" aria-hidden="true"></div>
+    </footer>
 
-    <!-- PARTICLE BACKGROUND -->
-    <div id="particles" aria-hidden="true"></div>
+    <!-- AI ASSISTANT FLOATING BUTTON & CHAT -->
+    <div id="ai-assistant" class="ai-assistant">
+      <button id="ai-toggle" class="ai-toggle" aria-label="Open AI Assistant">
+        <span class="ai-icon">🤖</span>
+        <span class="ai-pulse"></span>
+      </button>
+      <div id="ai-chat" class="ai-chat" aria-hidden="true">
+        <div class="ai-chat-header">
+          <div class="ai-header-info">
+            <span class="ai-avatar">🤖</span>
+            <div>
+              <h3 class="ai-name">Eliud AI Assistant</h3>
+              <p class="ai-status">Online • Ask me anything</p>
+            </div>
+          </div>
+          <button id="ai-close" class="ai-close" aria-label="Close chat">×</button>
+        </div>
+        <div id="ai-messages" class="ai-messages"></div>
+        <div class="ai-input-wrapper">
+          <input type="text" id="ai-input" class="ai-input" placeholder="Ask about services, experience, or projects..." />
+          <button id="ai-send" class="ai-send" aria-label="Send message">
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <!-- HOLOGRAPHIC GRID BACKGROUND -->
-    <canvas id="grid-canvas" aria-hidden="true"></canvas>
-
-    <!-- LEFT ROADMAP RAIL (wayfinding) -->
-    <aside class="constellation" aria-hidden="true">
+    <script src="./script.js"></script>
+  </body>
+</html>true">
       <svg class="stars" viewBox="0 0 80 600" preserveAspectRatio="xMidYMin slice" width="42" height="100%">
         <!-- Lines (connections) -->
         <line x1="40" y1="50" x2="40" y2="170" class="link" />
@@ -348,6 +355,33 @@
         </div>
       </div>
     </footer>
+
+    <!-- AI ASSISTANT FLOATING BUTTON & CHAT -->
+    <div id="ai-assistant" class="ai-assistant">
+      <button id="ai-toggle" class="ai-toggle" aria-label="Open AI Assistant">
+        <span class="ai-icon">🤖</span>
+        <span class="ai-pulse"></span>
+      </button>
+      <div id="ai-chat" class="ai-chat" aria-hidden="true">
+        <div class="ai-chat-header">
+          <div class="ai-header-info">
+            <span class="ai-avatar">🤖</span>
+            <div>
+              <h3 class="ai-name">Eliud AI Assistant</h3>
+              <p class="ai-status">Online • Ask me anything</p>
+            </div>
+          </div>
+          <button id="ai-close" class="ai-close" aria-label="Close chat">×</button>
+        </div>
+        <div id="ai-messages" class="ai-messages"></div>
+        <div class="ai-input-wrapper">
+          <input type="text" id="ai-input" class="ai-input" placeholder="Ask about services, experience, or projects..." />
+          <button id="ai-send" class="ai-send" aria-label="Send message">
+            <span>→</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script src="./script.js"></script>
   </body>
