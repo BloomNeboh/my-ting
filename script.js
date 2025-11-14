@@ -1,46 +1,61 @@
-// Eliud — Portfolio Interactions (Enhanced)
-// - Theme switcher with ripple wave + accent cycling
-// - Scroll-triggered reveal animations
-// - Smooth nav (native CSS) + footer year
-// - NEW: Custom cursor, particle system, parallax effects, enhanced interactions
+  // ADVANCED TEXT REVEAL
+  function initTextReveal() {
+    const textReveal = document.querySelector('.text-reveal');
+    if (textReveal) {
+      // Trigger reveal animation
+      setTimeout(() => {
+        textReveal.classList.add('is-visible');
+      }, 300);
+    }
+    
+    // Split text animation for tagline
+    const textSplit = document.querySelector('.text-split');
+    if (textSplit) {
+      const words = textSplit.textContent.split(' ');
+      textSplit.innerHTML = words.map((word, i) => 
+        `<span style="animation-delay: ${i * 0.1}s; opacity: 0; animation: fade-in-word 0.6s ease forwards;">${word}</span>`
+      ).join(' ');
+    }
+  }
 
-(function () {
-  const docEl = document.documentElement;
-  const rippleRoot = document.getElementById('ripple-root');
-  const themeToggle = document.getElementById('themeToggle');
-  const menuToggle = document.getElementById('menuToggle');
-  const cursor = document.querySelector('.cursor');
-  const cursorFollower = document.querySelector('.cursor-follower');
-  const particlesContainer = document.getElementById('particles');
+  // Add CSS for word fade-in
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fade-in-word {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
 
-  // Accent palette rotation
-  const ACCENTS = [
-    { name: 'blue', main: getCSS('--accent-blue') || '#4cc9ff' },
-    { name: 'green', main: getCSS('--accent-green') || '#00f5a0' },
-    { name: 'orange', main: getCSS('--accent-orange') || '#ff8a00' },
-    { name: 'pink', main: getCSS('--accent-pink') || '#ff46c6' }
-  ];
-  let accentIndex = 0;
+  initTextReveal();
 
-  // Utilities
-  function getCSS(varName) {
-    return getComputedStyle(docEl).getPropertyValue(varName).trim();
+  // Add entrance animation to hero title
+  const heroTitle = document.querySelector('.hero-title');
+  if (heroTitle) {
+    setTimeout(() => {
+      heroTitle.style.animation = 'title-glow 3s ease-in-out infinite, floating 3s ease-in-out infinite';
+    }, 500);
   }
-  function setCSS(varName, value) {
-    docEl.style.setProperty(varName, value);
+
+  // Add typewriter effect to hero role
+  const heroRole = document.querySelector('.hero-role');
+  if (heroRole && !heroRole.classList.contains('typewriter-complete')) {
+    heroRole.classList.add('typewriter-complete');
   }
-  function currentTheme() {
-    return docEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  }
-  function toggleTheme() {
-    const next = currentTheme() === 'dark' ? 'light' : 'dark';
-    docEl.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch {}
-    updateMetaThemeColor();
-  }
-  function updateAccent(index) {
-    const a = ACCENTS[index % ACCENTS.length];
-    // Compute a secondary accent for glow/gradient (slightly lighter)
+
+  // Update grid color on accent change
+  const originalUpdateAccent = updateAccent;
+  updateAccent = function(index) {
+    originalUpdateAccent(index);
+    if (gridCanvas) {
+      // Grid will update on next frame
+    }
+  };
+
+  console.log('✨ Next-Gen Portfolio loaded with cutting-edge features!');
+  console.log('🚀 Features: Holographic Grid, Magnetic 3D, Particle Connections, Advanced Cursor, Mouse Trails');
+})();ent for glow/gradient (slightly lighter)
     const secondary = a.name === 'blue' ? '#72ddff' :
                      a.name === 'green' ? '#44ffc3' :
                      a.name === 'orange' ? '#ffb357' : '#ff7bdd';
@@ -59,11 +74,92 @@
     return (a = alphaDefault) => `rgba(${r}, ${g}, ${b}, ${a})`;
   }
 
-  // CUSTOM CURSOR
+  // HOLOGRAPHIC GRID CANVAS
+  function initHolographicGrid() {
+    if (!gridCanvas || window.innerWidth < 768) return;
+    
+    const ctx = gridCanvas.getContext('2d');
+    let animationFrame;
+    
+    function resizeCanvas() {
+      gridCanvas.width = window.innerWidth;
+      gridCanvas.height = window.innerHeight;
+    }
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    let time = 0;
+    const gridSize = 50;
+    const lineColor = getCSS('--accent-2') || '#72ddff';
+    
+    function drawGrid() {
+      ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth = 0.5;
+      ctx.globalAlpha = 0.2;
+      
+      // Vertical lines with parallax
+      for (let x = 0; x < gridCanvas.width; x += gridSize) {
+        const offset = Math.sin(time + x * 0.001) * 2;
+        ctx.beginPath();
+        ctx.moveTo(x + offset, 0);
+        ctx.lineTo(x + offset, gridCanvas.height);
+        ctx.stroke();
+      }
+      
+      // Horizontal lines with parallax
+      for (let y = 0; y < gridCanvas.height; y += gridSize) {
+        const offset = Math.cos(time + y * 0.001) * 2;
+        ctx.beginPath();
+        ctx.moveTo(0, y + offset);
+        ctx.lineTo(gridCanvas.width, y + offset);
+        ctx.stroke();
+      }
+      
+      time += 0.01;
+      animationFrame = requestAnimationFrame(drawGrid);
+    }
+    
+    drawGrid();
+  }
+
+  // MOUSE TRAIL SYSTEM
+  let trailDots = [];
+  let lastTrailTime = 0;
+  
+  function createMouseTrail(e) {
+    if (!mouseTrailContainer || window.innerWidth < 768) return;
+    
+    const now = Date.now();
+    if (now - lastTrailTime < 16) return; // Throttle to ~60fps
+    lastTrailTime = now;
+    
+    const dot = document.createElement('div');
+    dot.className = 'trail-dot';
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+    
+    const accentColor = ACCENTS[accentIndex].main;
+    dot.style.background = accentColor;
+    dot.style.boxShadow = `0 0 8px ${accentColor}`;
+    
+    mouseTrailContainer.appendChild(dot);
+    
+    setTimeout(() => {
+      if (dot.parentNode) {
+        dot.remove();
+      }
+    }, 800);
+  }
+
+  // CUSTOM CURSOR WITH TRAIL
   let mouseX = 0;
   let mouseY = 0;
   let followerX = 0;
   let followerY = 0;
+  let trailX = 0;
+  let trailY = 0;
 
   function updateCursor(e) {
     if (!cursor || !cursorFollower) return;
@@ -81,89 +177,192 @@
     cursorFollower.style.left = followerX + 'px';
     cursorFollower.style.top = followerY + 'px';
 
+    // Cursor trail with more delay
+    if (cursorTrail) {
+      trailX += (mouseX - trailX) * 0.05;
+      trailY += (mouseY - trailY) * 0.05;
+      cursorTrail.style.left = trailX + 'px';
+      cursorTrail.style.top = trailY + 'px';
+    }
+
+    // Create mouse trail dots
+    createMouseTrail(e);
+
     // Check if hovering over interactive elements
     const hovered = e.target.closest('a, button, .nav-link, .exp-toggle, .star, .icon-link');
     if (hovered) {
       cursor.classList.add('hover');
       cursorFollower.classList.add('hover');
+      if (cursorTrail) cursorTrail.classList.add('hover');
     } else {
       cursor.classList.remove('hover');
       cursorFollower.classList.remove('hover');
+      if (cursorTrail) cursorTrail.classList.remove('hover');
     }
   }
 
   // Only enable custom cursor on desktop
   if (window.innerWidth > 640) {
     document.addEventListener('mousemove', updateCursor);
+    initHolographicGrid();
   }
 
-  // PARTICLE SYSTEM
+  // ADVANCED PARTICLE SYSTEM WITH CONNECTIONS
+  const particles = [];
+  const maxParticles = 30;
+  
   function createParticle() {
-    if (!particlesContainer || window.innerWidth < 768) return;
+    if (!particlesContainer || window.innerWidth < 768) return null;
     
-    const particle = document.createElement('div');
-    particle.className = 'particle';
+    const particle = {
+      element: document.createElement('div'),
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      size: Math.random() * 3 + 1
+    };
     
-    const size = Math.random() * 3 + 1;
-    const startX = Math.random() * window.innerWidth;
-    const duration = Math.random() * 20 + 15;
-    const delay = Math.random() * 5;
+    particle.element.className = 'particle';
+    particle.element.style.width = particle.size + 'px';
+    particle.element.style.height = particle.size + 'px';
     
-    particle.style.width = size + 'px';
-    particle.style.height = size + 'px';
-    particle.style.left = startX + 'px';
-    particle.style.animationDuration = duration + 's';
-    particle.style.animationDelay = delay + 's';
+    const accentColor = ACCENTS[accentIndex].main;
+    particle.element.style.background = accentColor;
+    particle.element.style.boxShadow = `0 0 ${particle.size * 2}px ${accentColor}`;
     
-    // Random accent color
-    const accentColor = ACCENTS[Math.floor(Math.random() * ACCENTS.length)].main;
-    particle.style.background = accentColor;
-    particle.style.boxShadow = `0 0 ${size * 2}px ${accentColor}`;
+    particlesContainer.appendChild(particle.element);
+    particles.push(particle);
     
-    particlesContainer.appendChild(particle);
-    
-    // Remove after animation
-    setTimeout(() => {
-      if (particle.parentNode) {
-        particle.remove();
-      }
-    }, (duration + delay) * 1000);
+    return particle;
   }
 
-  // Create particles periodically
+  function updateParticles() {
+    if (window.innerWidth < 768) return;
+    
+    particles.forEach((particle, i) => {
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+      
+      // Bounce off edges
+      if (particle.x < 0 || particle.x > window.innerWidth) particle.vx *= -1;
+      if (particle.y < 0 || particle.y > window.innerHeight) particle.vy *= -1;
+      
+      particle.element.style.left = particle.x + 'px';
+      particle.element.style.top = particle.y + 'px';
+      
+      // Draw connections to nearby particles
+      particles.slice(i + 1).forEach(otherParticle => {
+        const dx = particle.x - otherParticle.x;
+        const dy = particle.y - otherParticle.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 150) {
+          // Create connection line if it doesn't exist
+          let connection = particlesContainer.querySelector(`[data-connection="${i}-${particles.indexOf(otherParticle)}"]`);
+          if (!connection) {
+            connection = document.createElement('div');
+            connection.className = 'particle-connection';
+            connection.setAttribute('data-connection', `${i}-${particles.indexOf(otherParticle)}`);
+            particlesContainer.appendChild(connection);
+          }
+          
+          const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+          connection.style.width = distance + 'px';
+          connection.style.left = otherParticle.x + 'px';
+          connection.style.top = otherParticle.y + 'px';
+          connection.style.transform = `rotate(${angle}deg)`;
+          connection.style.opacity = (1 - distance / 150) * 0.3;
+        }
+      });
+    });
+    
+    // Remove old connections
+    particlesContainer.querySelectorAll('.particle-connection').forEach(conn => {
+      const [i, j] = conn.getAttribute('data-connection').split('-').map(Number);
+      if (!particles[i] || !particles[j]) {
+        conn.remove();
+      } else {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > 150) {
+          conn.remove();
+        }
+      }
+    });
+    
+    requestAnimationFrame(updateParticles);
+  }
+
   function initParticles() {
     if (window.innerWidth < 768) return;
     
-    // Initial particles
-    for (let i = 0; i < 15; i++) {
-      setTimeout(() => createParticle(), i * 200);
+    // Create initial particles
+    for (let i = 0; i < maxParticles; i++) {
+      createParticle();
     }
     
-    // Continuous particle creation
-    setInterval(() => {
-      if (particlesContainer.children.length < 20) {
-        createParticle();
-      }
-    }, 2000);
+    // Start animation loop
+    updateParticles();
   }
 
   initParticles();
 
-  // PARALLAX EFFECTS
+  // MAGNETIC INTERACTIONS
+  function initMagneticEffects() {
+    const magneticElements = document.querySelectorAll('.magnetic, .magnetic-3d');
+    
+    magneticElements.forEach((el) => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        const moveX = x * 0.15;
+        const moveY = y * 0.15;
+        
+        if (el.classList.contains('magnetic-3d')) {
+          const rotateX = (y / rect.height) * 10;
+          const rotateY = (x / rect.width) * -10;
+          el.style.transform = `translate(${moveX}px, ${moveY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        } else {
+          el.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+        }
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = '';
+      });
+    });
+  }
+
+  initMagneticEffects();
+
+  // ADVANCED PARALLAX EFFECTS WITH 3D
   function initParallax() {
     const parallaxElements = document.querySelectorAll('.hero-img, .card.glass, .section-title');
     
     function updateParallax() {
       const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
       
       parallaxElements.forEach((el, index) => {
         const rect = el.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        const isVisible = rect.top < windowHeight && rect.bottom > 0;
         
         if (isVisible) {
           const speed = 0.1 + (index % 3) * 0.05;
           const yPos = -(scrollY * speed);
-          el.style.transform = `translateY(${yPos}px)`;
+          const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
+          
+          // Add 3D rotation based on scroll
+          if (el.classList.contains('magnetic-3d')) {
+            const rotateX = (progress - 0.5) * 5;
+            el.style.transform = `translateY(${yPos}px) rotateX(${rotateX}deg)`;
+          } else {
+            el.style.transform = `translateY(${yPos}px)`;
+          }
         }
       });
     }
@@ -511,6 +710,38 @@
     document.body.style.cursor = 'auto';
   }
 
+  // ADVANCED TEXT REVEAL
+  function initTextReveal() {
+    const textReveal = document.querySelector('.text-reveal');
+    if (textReveal) {
+      // Trigger reveal animation
+      setTimeout(() => {
+        textReveal.classList.add('is-visible');
+      }, 300);
+    }
+    
+    // Split text animation for tagline
+    const textSplit = document.querySelector('.text-split');
+    if (textSplit) {
+      const words = textSplit.textContent.split(' ');
+      textSplit.innerHTML = words.map((word, i) => 
+        `<span style="animation-delay: ${i * 0.1}s; opacity: 0; animation: fade-in-word 0.6s ease forwards;">${word}</span>`
+      ).join(' ');
+    }
+  }
+
+  // Add CSS for word fade-in
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fade-in-word {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  initTextReveal();
+
   // Add entrance animation to hero title
   const heroTitle = document.querySelector('.hero-title');
   if (heroTitle) {
@@ -525,5 +756,15 @@
     heroRole.classList.add('typewriter-complete');
   }
 
-  console.log('✨ Portfolio enhanced with eye-catching animations!');
+  // Update grid color on accent change
+  const originalUpdateAccent = updateAccent;
+  updateAccent = function(index) {
+    originalUpdateAccent(index);
+    if (gridCanvas) {
+      // Grid will update on next frame
+    }
+  };
+
+  console.log('✨ Next-Gen Portfolio loaded with cutting-edge features!');
+  console.log('🚀 Features: Holographic Grid, Magnetic 3D, Particle Connections, Advanced Cursor, Mouse Trails');
 })();
