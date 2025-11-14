@@ -1,6 +1,6 @@
 # Personal Portfolio
 
-A modern, responsive portfolio for Eliud — Tourism Marketing Manager & Web Developer. Built with a dark futuristic aesthetic, neon accents, glassmorphism cards, smooth scroll animations, and a light/dark theme switcher with a ripple effect.
+A modern, responsive portfolio for Eliud Tourism Marketing Manager & Web Developer. Built with a dark futuristic aesthetic, neon accents, glassmorphism cards, smooth scroll animations, and a light/dark theme switcher with a ripple effect.
 
 ## Preview
 - Open `index.html` directly in a browser, or use a static server (recommended) for correct caching and paths.
