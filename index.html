@@ -18,9 +18,8 @@
     <!-- PARTICLE BACKGROUND -->
     <div id="particles" aria-hidden="true"></div>
 
-    <!-- CUSTOM CURSOR -->
-    <div class="cursor" aria-hidden="true"></div>
-    <div class="cursor-follower" aria-hidden="true"></div>
+    <!-- HOLOGRAPHIC GRID BACKGROUND -->
+    <canvas id="grid-canvas" aria-hidden="true"></canvas>
 
     <!-- LEFT ROADMAP RAIL (wayfinding) -->
     <aside class="constellation" aria-hidden="true">
@@ -30,6 +29,7 @@
         <line x1="40" y1="170" x2="40" y2="300" class="link" />
         <line x1="40" y1="300" x2="40" y2="430" class="link" />
         <line x1="40" y1="430" x2="40" y2="560" class="link" />
+        <line x1="40" y1="560" x2="40" y2="680" class="link" />
         <!-- Stars (one per section) -->
         <g class="star" data-target="#home" transform="translate(40,50)">
           <circle r="4" class="core" />
@@ -48,6 +48,10 @@
           <circle r="8" class="glow" />
         </g>
         <g class="star" data-target="#contact" transform="translate(40,560)">
+          <circle r="4" class="core" />
+          <circle r="8" class="glow" />
+        </g>
+        <g class="star" data-target="#email-form" transform="translate(40,680)">
           <circle r="4" class="core" />
           <circle r="8" class="glow" />
         </g>
@@ -71,8 +75,11 @@
         </nav>
 
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
-          <span class="icon sun" aria-hidden="true"></span>
-          <span class="icon moon" aria-hidden="true"></span>
+          <div class="theme-toggle-inner">
+            <span class="icon sun" aria-hidden="true"></span>
+            <span class="icon moon" aria-hidden="true"></span>
+            <div class="theme-ripple"></div>
+          </div>
         </button>
       </div>
     </header>
@@ -88,12 +95,12 @@
             </div>
           </div>
           <div class="hero-copy">
-            <h1 class="hero-title neon floating-text">Hey, I'm Eliud</h1>
+            <h1 class="hero-title neon floating-text text-reveal">Hey, I'm <span class="text-gradient">Eliud</span></h1>
             <p class="hero-role typewriter">Tourism Marketing Manager & Web Developer</p>
-            <p class="hero-tagline">I map dreams to journeys, code visions to clicks rhythm in strategy, harmony in pixels, momentum in the market.</p>
+            <p class="hero-tagline text-split">I map dreams to journeys, code visions to clicks rhythm in strategy, harmony in pixels, momentum in the market.</p>
             <div class="hero-ctas">
-              <a class="btn btn-primary btn-pulse" href="./assets/neboh cv.pdf" target="_blank" rel="noopener">Download CV</a>
-              <a class="btn btn-ghost btn-shimmer" href="https://wa.me/255621671652" target="_blank" rel="noopener">Let's Talk</a>
+              <a class="btn btn-primary btn-pulse magnetic" href="./assets/neboh cv.pdf" target="_blank" rel="noopener">Download CV</a>
+              <a class="btn btn-ghost btn-shimmer magnetic" href="https://wa.me/255621671652" target="_blank" rel="noopener">Let's Talk</a>
             </div>
           </div>
         </div>
@@ -111,17 +118,23 @@
               I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution — so every click feels natural and every journey feels memorable.
             </p>
             <div class="values-grid">
-              <article class="card glass value value-card-1">
-                <h3>Creativity</h3>
-                <p>Original concepts with measurable outcomes — ideas that travel further.</p>
+              <article class="card glass value value-card-1 magnetic-3d">
+                <div class="card-inner">
+                  <h3>Creativity</h3>
+                  <p>Original concepts with measurable outcomes — ideas that travel further.</p>
+                </div>
               </article>
-              <article class="card glass value value-card-2">
-                <h3>Reliability</h3>
-                <p>Clear comms, tight delivery, and ownership from brief to ship.</p>
+              <article class="card glass value value-card-2 magnetic-3d">
+                <div class="card-inner">
+                  <h3>Reliability</h3>
+                  <p>Clear comms, tight delivery, and ownership from brief to ship.</p>
+                </div>
               </article>
-              <article class="card glass value value-card-3">
-                <h3>Digital Excellence</h3>
-                <p>Performance-first design, clean code, and systems that scale.</p>
+              <article class="card glass value value-card-3 magnetic-3d">
+                <div class="card-inner">
+                  <h3>Digital Excellence</h3>
+                  <p>Performance-first design, clean code, and systems that scale.</p>
+                </div>
               </article>
             </div>
           </div>
@@ -136,7 +149,7 @@
             <p class="section-sub">Selected roles and outcomes</p>
           </div>
           <div class="exp-grid">
-            <article class="card glass exp-card exp-card-1" data-expanded="false">
+            <article class="card glass exp-card exp-card-1 magnetic-3d" data-expanded="false">
               <h3>Tourism Marketing</h3>
               <ul>
                 <li>Designed destination campaigns increasing inquiries and bookings.</li>
@@ -153,7 +166,7 @@
               </div>
               <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-1">Read more</button>
             </article>
-            <article class="card glass exp-card exp-card-2" data-expanded="false">
+            <article class="card glass exp-card exp-card-2 magnetic-3d" data-expanded="false">
               <h3>Web Development & Branding Projects</h3>
               <ul>
                 <li>Shipped responsive websites with modern stacks and SEO foundations.</li>
@@ -170,7 +183,7 @@
               </div>
               <button class="exp-toggle" aria-expanded="false" aria-controls="exp-more-2">Read more</button>
             </article>
-            <article class="card glass exp-card exp-card-3" data-expanded="false">
+            <article class="card glass exp-card exp-card-3 magnetic-3d" data-expanded="false">
               <h3>Content Creation</h3>
               <ul>
                 <li>Produced multimedia stories highlighting local culture and value.</li>
@@ -200,7 +213,7 @@
           </div>
           <div class="refs-grid">
             <!-- Example 1 -->
-            <article class="card glass ref-card ref-card-1">
+            <article class="card glass ref-card ref-card-1 magnetic-3d">
               <div class="ref-header">
                 <div class="ref-avatar-wrapper">
                   <img src="./assets/refs/abuu.jpg" alt="Referee 1" class="ref-avatar" width="320" height="320" loading="lazy" />
@@ -218,7 +231,7 @@
             </article>
 
             <!-- Example 2 -->
-            <article class="card glass ref-card ref-card-2">
+            <article class="card glass ref-card ref-card-2 magnetic-3d">
               <div class="ref-header">
                 <div class="ref-avatar-wrapper">
                   <img src="./assets/refs/benson.jpg" alt="Referee 2" class="ref-avatar" width="320" height="320" loading="lazy" />
@@ -236,7 +249,7 @@
             </article>
 
             <!-- Example 3 -->
-            <article class="card glass ref-card ref-card-3">
+            <article class="card glass ref-card ref-card-3 magnetic-3d">
               <div class="ref-header">
                 <div class="ref-avatar-wrapper">
                   <img src="./assets/refs/maria.jpg" alt="Referee 3" class="ref-avatar" width="320" height="320" loading="lazy" />
@@ -265,18 +278,52 @@
           </div>
 
           <div class="contact-row">
-            <a href="mailto:ellymchome503@gmail.com" class="icon-link icon-link-1" target="_blank" rel="noopener" aria-label="Email">
+            <a href="mailto:ellymchome503@gmail.com" class="icon-link icon-link-1 magnetic" target="_blank" rel="noopener" aria-label="Email">
               <img src="./assets/logos/email.png" alt="Email" />
             </a>
-            <a href="https://wa.me/255621671652" class="icon-link icon-link-2" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <a href="https://wa.me/255621671652" class="icon-link icon-link-2 magnetic" target="_blank" rel="noopener" aria-label="WhatsApp">
               <img src="./assets/logos/whatsapp.png" alt="WhatsApp" />
             </a>
-            <a href="https://www.facebook.com/share/14PNx8ayxLF/" class="icon-link icon-link-3" target="_blank" rel="noopener" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/14PNx8ayxLF/" class="icon-link icon-link-3 magnetic" target="_blank" rel="noopener" aria-label="Facebook">
               <img src="./assets/logos/Facebook.png" alt="Facebook" />
             </a>
-            <a href="https://www.linkedin.com/in/eliud-mchome-a905902bb?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="icon-link icon-link-4" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/eliud-mchome-a905902bb?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="icon-link icon-link-4 magnetic" target="_blank" rel="noopener" aria-label="LinkedIn">
               <img src="./assets/logos/linkedin.png" alt="LinkedIn" />
             </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMAIL CONTACT FORM -->
+      <section id="email-form" class="section reveal" data-anim="fade-up">
+        <div class="container">
+          <div class="section-head">
+            <h2 class="section-title neon">Send a Message</h2>
+            <p class="section-sub">Drop me a line, let's create something amazing together</p>
+          </div>
+          <div class="form-wrapper">
+            <form class="contact-form card glass" action="mailto:ellymchome503@gmail.com" method="post" enctype="text/plain">
+              <div class="form-group">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="name" name="name" class="form-input" required placeholder="Your name" />
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-input" required placeholder="your.email@example.com" />
+              </div>
+              <div class="form-group">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" id="subject" name="subject" class="form-input" required placeholder="What's this about?" />
+              </div>
+              <div class="form-group">
+                <label for="message" class="form-label">Message</label>
+                <textarea id="message" name="message" class="form-textarea" rows="6" required placeholder="Tell me about your project, idea, or just say hi..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-pulse magnetic form-submit">
+                <span>Send Message</span>
+                <span class="btn-loader"></span>
+              </button>
+            </form>
           </div>
         </div>
       </section>
@@ -291,8 +338,8 @@
             <p class="coffee-text">Let's talk business, web, tourism and ideas. Book a coffee meeting.</p>
           </div>
           <div class="coffee-actions">
-            <a class="btn btn-primary btn-pulse" href="https://wa.me/255621671652" target="_blank" rel="noopener">WhatsApp</a>
-            <a class="btn btn-ghost btn-shimmer" href="https://cal.com/eliud.mchome/30min?" target="_blank" rel="noopener">Book on Cal.com</a>
+            <a class="btn btn-primary btn-pulse magnetic" href="https://wa.me/255621671652" target="_blank" rel="noopener">WhatsApp</a>
+            <a class="btn btn-ghost btn-shimmer magnetic" href="https://cal.com/eliud.mchome/30min?" target="_blank" rel="noopener">Book on Cal.com</a>
           </div>
         </div>
         <div class="legal">
@@ -303,4 +350,4 @@
 
     <script src="./script.js"></script>
   </body>
-  </html>
+</html>
