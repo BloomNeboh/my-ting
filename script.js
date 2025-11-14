@@ -1,343 +1,248 @@
-// Eliud — Professional Portfolio with Hip Hop Vibes
-// - Theme switcher with ripple wave + accent cycling + ALIVE animations
-// - Scroll-triggered reveal animations
-// - Smooth nav (native CSS) + footer year
-// - Contact form handling
-// - Particle system with connections
-// - Parallax effects
-// - Magnetic interactions
+  console.log('✨ Professional Portfolio with Hip Hop Vibes loaded!');
+  console.log('🚀 Features: Enhanced Theme Toggle, Contact Form, Magnetic 3D, Particle System, Holographic Grid');
 
-(function () {
-  const docEl = document.documentElement;
-  const rippleRoot = document.getElementById('ripple-root');
-  const themeToggle = document.getElementById('themeToggle');
-  const menuToggle = document.getElementById('menuToggle');
-  const particlesContainer = document.getElementById('particles');
-  const gridCanvas = document.getElementById('grid-canvas');
-  const contactForm = document.querySelector('.contact-form');
+  // AI ASSISTANT FUNCTIONALITY
+  const aiToggle = document.getElementById('ai-toggle');
+  const aiChat = document.getElementById('ai-chat');
+  const aiClose = document.getElementById('ai-close');
+  const aiInput = document.getElementById('ai-input');
+  const aiSend = document.getElementById('ai-send');
+  const aiMessages = document.getElementById('ai-messages');
 
-  // Accent palette rotation
-  const ACCENTS = [
-    { name: 'blue', main: getCSS('--accent-blue') || '#4cc9ff' },
-    { name: 'green', main: getCSS('--accent-green') || '#00f5a0' },
-    { name: 'orange', main: getCSS('--accent-orange') || '#ff8a00' },
-    { name: 'pink', main: getCSS('--accent-pink') || '#ff46c6' }
-  ];
-  let accentIndex = 0;
+  // AI Knowledge Base - All about Eliud
+  const aiKnowledge = {
+    name: 'Eliud',
+    role: 'Tourism Marketing Manager & Web Developer',
+    email: 'ellymchome503@gmail.com',
+    whatsapp: '+255621671652',
+    services: [
+      'Tourism Marketing - Destination campaigns, partner funnels, email drips, retargeting sequences',
+      'Web Development - Responsive websites, modern stacks, SEO foundations, component libraries',
+      'Branding Projects - Brand systems, design tokens, visual identity',
+      'Content Creation - Multimedia stories, social assets, short-form video with CTAs'
+    ],
+    experience: [
+      'Tourism Marketing - Designed destination campaigns, built partner funnels, optimized content calendars',
+      'Web Development & Branding - Shipped responsive websites, created component libraries, integrated analytics',
+      'Content Creation - Produced multimedia stories, managed social assets, scripted short-form video'
+    ],
+    values: [
+      'Creativity - Original concepts with measurable outcomes',
+      'Reliability - Clear comms, tight delivery, ownership from brief to ship',
+      'Digital Excellence - Performance-first design, clean code, systems that scale'
+    ],
+    referees: [
+      'Abuu Karata - General Manager, Airport Planet Lodge',
+      'Alex Benson Sichona - Ass. Lecturer, University of Dar es Salaam',
+      'Maria Donath Labila - Tour Operator, Tupande Usambara Cultural Tour'
+    ],
+    tagline: 'I map dreams to journeys, code visions to clicks rhythm in strategy, harmony in pixels, momentum in the market.',
+    about: 'I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution.'
+  };
 
-  // Utilities
-  function getCSS(varName) {
-    return getComputedStyle(docEl).getPropertyValue(varName).trim();
-  }
-  function setCSS(varName, value) {
-    docEl.style.setProperty(varName, value);
-  }
-  function currentTheme() {
-    return docEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  }
-  function toggleTheme() {
-    const next = currentTheme() === 'dark' ? 'light' : 'dark';
-    docEl.setAttribute('data-theme', next);
-    try { localStorage.setItem('theme', next); } catch {}
-    updateMetaThemeColor();
-  }
-  function updateAccent(index) {
-    const a = ACCENTS[index % ACCENTS.length];
-    // Compute a secondary accent for glow/gradient (slightly lighter)
-    const secondary = a.name === 'blue' ? '#72ddff' :
-                     a.name === 'green' ? '#44ffc3' :
-                     a.name === 'orange' ? '#ffb357' : '#ff7bdd';
-    setCSS('--accent', a.main);
-    setCSS('--accent-2', secondary);
-    // Update glow shadow based on accent color (use rgba derived)
-    const rgba = hexToRgba(a.main, 1);
-    setCSS('--glow', `0 0 24px ${rgba(0.65)}, 0 0 48px ${rgba(0.30)}`);
-  }
-  function hexToRgba(hex, alphaDefault) {
-    const hx = hex.replace('#', '');
-    const bigint = parseInt(hx.length === 3 ? hx.replace(/(.)/g, '$1$1') : hx, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return (a = alphaDefault) => `rgba(${r}, ${g}, ${b}, ${a})`;
-  }
-
-  // HOLOGRAPHIC GRID CANVAS
-  function initHolographicGrid() {
-    if (!gridCanvas || window.innerWidth < 768) return;
+  // AI Response Generator
+  function generateAIResponse(userMessage) {
+    const message = userMessage.toLowerCase().trim();
     
-    const ctx = gridCanvas.getContext('2d');
-    let animationFrame;
-    
-    function resizeCanvas() {
-      gridCanvas.width = window.innerWidth;
-      gridCanvas.height = window.innerHeight;
+    // Greetings
+    if (message.match(/^(hi|hello|hey|greetings|good morning|good afternoon|good evening)/)) {
+      return `Hello! 👋 I'm Eliud's AI Assistant. I'm here to help you learn about ${aiKnowledge.name}'s services, experience, and how to get in touch. What would you like to know?`;
     }
     
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    let time = 0;
-    const gridSize = 50;
-    
-    function drawGrid() {
-      const lineColor = getCSS('--accent-2') || '#72ddff';
-      ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = 0.5;
-      ctx.globalAlpha = 0.2;
-      
-      // Vertical lines with parallax
-      for (let x = 0; x < gridCanvas.width; x += gridSize) {
-        const offset = Math.sin(time + x * 0.001) * 2;
-        ctx.beginPath();
-        ctx.moveTo(x + offset, 0);
-        ctx.lineTo(x + offset, gridCanvas.height);
-        ctx.stroke();
-      }
-      
-      // Horizontal lines with parallax
-      for (let y = 0; y < gridCanvas.height; y += gridSize) {
-        const offset = Math.cos(time + y * 0.001) * 2;
-        ctx.beginPath();
-        ctx.moveTo(0, y + offset);
-        ctx.lineTo(gridCanvas.width, y + offset);
-        ctx.stroke();
-      }
-      
-      time += 0.01;
-      animationFrame = requestAnimationFrame(drawGrid);
+    // Name
+    if (message.match(/(who are you|what's your name|your name|who is eliud|tell me about eliud)/)) {
+      return `${aiKnowledge.name} is a ${aiKnowledge.role}. ${aiKnowledge.about} ${aiKnowledge.tagline}`;
     }
     
-    drawGrid();
-  }
-
-  // ADVANCED PARTICLE SYSTEM WITH CONNECTIONS
-  const particles = [];
-  const maxParticles = 25;
-  
-  function createParticle() {
-    if (!particlesContainer || window.innerWidth < 768) return null;
-    
-    const particle = {
-      element: document.createElement('div'),
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      size: Math.random() * 3 + 1
-    };
-    
-    particle.element.className = 'particle';
-    particle.element.style.width = particle.size + 'px';
-    particle.element.style.height = particle.size + 'px';
-    
-    const accentColor = ACCENTS[accentIndex].main;
-    particle.element.style.background = accentColor;
-    particle.element.style.boxShadow = `0 0 ${particle.size * 2}px ${accentColor}`;
-    
-    particlesContainer.appendChild(particle.element);
-    particles.push(particle);
-    
-    return particle;
-  }
-
-  function updateParticles() {
-    if (window.innerWidth < 768) return;
-    
-    particles.forEach((particle, i) => {
-      particle.x += particle.vx;
-      particle.y += particle.vy;
-      
-      // Bounce off edges
-      if (particle.x < 0 || particle.x > window.innerWidth) particle.vx *= -1;
-      if (particle.y < 0 || particle.y > window.innerHeight) particle.vy *= -1;
-      
-      particle.element.style.left = particle.x + 'px';
-      particle.element.style.top = particle.y + 'px';
-    });
-    
-    requestAnimationFrame(updateParticles);
-  }
-
-  function initParticles() {
-    if (window.innerWidth < 768) return;
-    
-    // Create initial particles
-    for (let i = 0; i < maxParticles; i++) {
-      createParticle();
+    // Services
+    if (message.match(/(services|what can|what do you|offer|provide|capabilities|skills)/)) {
+      return `Here are ${aiKnowledge.name}'s main services:\n\n${aiKnowledge.services.map((s, i) => `${i + 1}. ${s}`).join('\n\n')}\n\nWould you like more details about any specific service?`;
     }
     
-    // Start animation loop
-    updateParticles();
+    // Experience
+    if (message.match(/(experience|background|work|projects|portfolio|what has|done)/)) {
+      return `${aiKnowledge.name} has experience in:\n\n${aiKnowledge.experience.map((e, i) => `${i + 1}. ${e}`).join('\n\n')}\n\nYou can see more details in the Experience section above!`;
+    }
+    
+    // Contact
+    if (message.match(/(contact|email|phone|whatsapp|reach|get in touch|how to contact|connect)/)) {
+      return `You can reach ${aiKnowledge.name} through:\n\n📧 Email: ${aiKnowledge.email}\n📱 WhatsApp: ${aiKnowledge.whatsapp}\n\nOr use the contact form above to send a direct message! You can also book a coffee meeting via Cal.com.`;
+    }
+    
+    // Pricing/Cost
+    if (message.match(/(price|cost|fee|rate|how much|pricing|budget)/)) {
+      return `For pricing and project quotes, please reach out directly via email (${aiKnowledge.email}) or WhatsApp (${aiKnowledge.whatsapp}). ${aiKnowledge.name} provides customized quotes based on your specific project needs.`;
+    }
+    
+    // Availability
+    if (message.match(/(available|free|busy|when|schedule|timeline|time)/)) {
+      return `${aiKnowledge.name} is available for new projects! You can book a coffee meeting through the Cal.com link in the footer, or reach out via WhatsApp for immediate inquiries.`;
+    }
+    
+    // Tourism Marketing
+    if (message.match(/(tourism|marketing|destination|campaign|travel|tourism marketing)/)) {
+      return `${aiKnowledge.name} specializes in tourism marketing, including:\n\n• Destination campaigns that increase inquiries and bookings\n• Partner funnels and email drip campaigns\n• Retargeting sequences\n• Content calendars mapped to traveler intent\n• Geo-targeted creative and landing pages\n• Multi-touch attribution dashboards\n\nInterested in discussing a tourism marketing project?`;
+    }
+    
+    // Web Development
+    if (message.match(/(web|website|development|developer|coding|build|create website|web dev)/)) {
+      return `${aiKnowledge.name} offers web development services:\n\n• Responsive websites with modern tech stacks\n• SEO foundations and optimization\n• Component libraries and brand systems\n• Analytics integration and A/B testing\n• Performance-first design\n• Clean, scalable code\n\nReady to build something amazing?`;
+    }
+    
+    // Portfolio/Projects
+    if (message.match(/(portfolio|projects|work|examples|showcase|samples|previous work)/)) {
+      return `You're currently viewing ${aiKnowledge.name}'s portfolio! This site itself showcases the quality of work. For specific project examples and case studies, please reach out directly. ${aiKnowledge.name} has worked with various clients including hotels, tour operators, and educational institutions.`;
+    }
+    
+    // Referees/Testimonials
+    if (message.match(/(referee|testimonial|reference|review|feedback|client|satisfied)/)) {
+      return `${aiKnowledge.name} has worked with trusted partners:\n\n${aiKnowledge.referees.map((r, i) => `${i + 1}. ${r}`).join('\n\n')}\n\nYou can see their testimonials in the Referees section above!`;
+    }
+    
+    // Values/Approach
+    if (message.match(/(values|approach|philosophy|how|method|way|style)/)) {
+      return `${aiKnowledge.name}'s core values:\n\n${aiKnowledge.values.map((v, i) => `${i + 1}. ${v}`).join('\n\n')}\n\nThis approach ensures every project delivers measurable results and exceptional quality.`;
+    }
+    
+    // CV/Resume
+    if (message.match(/(cv|resume|download|pdf|curriculum|vitae)/)) {
+      return `You can download ${aiKnowledge.name}'s CV by clicking the "Download CV" button in the hero section above!`;
+    }
+    
+    // Default response
+    const defaultResponses = [
+      `I'm not sure I understand that question. Could you ask about ${aiKnowledge.name}'s services, experience, or how to get in touch?`,
+      `Hmm, let me help you better. You can ask me about:\n• Services offered\n• Experience and background\n• How to contact ${aiKnowledge.name}\n• Tourism marketing\n• Web development\n• Or anything else about the portfolio!`,
+      `I'd be happy to help! Try asking about ${aiKnowledge.name}'s services, experience, contact information, or specific areas like tourism marketing or web development.`
+    ];
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   }
 
-  initParticles();
-
-  // MAGNETIC INTERACTIONS
-  function initMagneticEffects() {
-    const magneticElements = document.querySelectorAll('.magnetic, .magnetic-3d');
+  // Add message to chat
+  function addMessage(content, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `ai-message ${isUser ? 'user' : 'ai'}`;
     
-    magneticElements.forEach((el) => {
-      el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
+    const avatar = document.createElement('div');
+    avatar.className = 'ai-message-avatar';
+    avatar.textContent = isUser ? '👤' : '🤖';
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'ai-message-content';
+    messageContent.textContent = content;
+    
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+    aiMessages.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+    
+    return messageDiv;
+  }
+
+  // Show typing indicator
+  function showTyping() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'ai-message ai';
+    typingDiv.id = 'ai-typing';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'ai-message-avatar';
+    avatar.textContent = '🤖';
+    
+    const typingContent = document.createElement('div');
+    typingContent.className = 'ai-message-typing';
+    typingContent.innerHTML = '<span></span><span></span><span></span>';
+    
+    typingDiv.appendChild(avatar);
+    typingDiv.appendChild(typingContent);
+    aiMessages.appendChild(typingDiv);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+    
+    return typingDiv;
+  }
+
+  // Remove typing indicator
+  function removeTyping() {
+    const typing = document.getElementById('ai-typing');
+    if (typing) typing.remove();
+  }
+
+  // Send message
+  function sendMessage() {
+    const message = aiInput.value.trim();
+    if (!message) return;
+    
+    // Add user message
+    addMessage(message, true);
+    aiInput.value = '';
+    
+    // Show typing indicator
+    const typing = showTyping();
+    
+    // Generate and show AI response after delay
+    setTimeout(() => {
+      removeTyping();
+      const response = generateAIResponse(message);
+      addMessage(response);
+    }, 800 + Math.random() * 400); // Simulate thinking time
+  }
+
+  // Toggle chat
+  if (aiToggle && aiChat) {
+    aiToggle.addEventListener('click', () => {
+      const isActive = aiChat.classList.contains('active');
+      if (!isActive) {
+        aiChat.classList.add('active');
+        aiChat.setAttribute('aria-hidden', 'false');
+        aiInput.focus();
         
-        const moveX = x * 0.15;
-        const moveY = y * 0.15;
-        
-        if (el.classList.contains('magnetic-3d')) {
-          const rotateX = (y / rect.height) * 10;
-          const rotateY = (x / rect.width) * -10;
-          el.style.transform = `translate(${moveX}px, ${moveY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-        } else {
-          el.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+        // Add welcome message if chat is empty
+        if (aiMessages.children.length === 0) {
+          setTimeout(() => {
+            addMessage(`Hello! 👋 I'm ${aiKnowledge.name}'s AI Assistant. I can help you learn about services, experience, and how to get in touch. What would you like to know?`);
+          }, 300);
         }
-      });
-      
-      el.addEventListener('mouseleave', () => {
-        el.style.transform = '';
-      });
+      }
     });
   }
 
-  initMagneticEffects();
+  // Close chat
+  if (aiClose) {
+    aiClose.addEventListener('click', () => {
+      aiChat.classList.remove('active');
+      aiChat.setAttribute('aria-hidden', 'true');
+    });
+  }
 
-  // PARALLAX EFFECTS
-  function initParallax() {
-    const parallaxElements = document.querySelectorAll('.hero-img, .card.glass, .section-title');
-    
-    function updateParallax() {
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      
-      parallaxElements.forEach((el, index) => {
-        const rect = el.getBoundingClientRect();
-        const isVisible = rect.top < windowHeight && rect.bottom > 0;
-        
-        if (isVisible) {
-          const speed = 0.1 + (index % 3) * 0.05;
-          const yPos = -(scrollY * speed);
-          const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-          
-          // Add 3D rotation based on scroll
-          if (el.classList.contains('magnetic-3d')) {
-            const rotateX = (progress - 0.5) * 5;
-            el.style.transform = `translateY(${yPos}px) rotateX(${rotateX}deg)`;
-          } else {
-            el.style.transform = `translateY(${yPos}px)`;
-          }
-        }
-      });
+  // Send on button click
+  if (aiSend) {
+    aiSend.addEventListener('click', sendMessage);
+  }
+
+  // Send on Enter key
+  if (aiInput) {
+    aiInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  }
+
+  // Close chat when clicking outside (optional)
+  document.addEventListener('click', (e) => {
+    if (aiChat && aiChat.classList.contains('active')) {
+      if (!aiChat.contains(e.target) && !aiToggle.contains(e.target)) {
+        // Optional: uncomment to close on outside click
+        // aiChat.classList.remove('active');
+        // aiChat.setAttribute('aria-hidden', 'true');
+      }
     }
-    
-    // Throttle scroll events
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          updateParallax();
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
-  }
+  });
 
-  initParallax();
-
-  // Ripple: centered on the toggle button
-  function rippleFrom(el) {
-    if (!rippleRoot || !el) return;
-    const rect = el.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const rip = document.createElement('span');
-    rip.className = 'ripple';
-    rip.style.left = `${cx}px`;
-    rip.style.top = `${cy}px`;
-    rippleRoot.appendChild(rip);
-    rip.addEventListener('animationend', () => rip.remove());
-  }
-
-  // ENHANCED THEME TOGGLE WITH ALIVE ANIMATION
-  if (themeToggle) {
-    const themeRipple = themeToggle.querySelector('.theme-ripple');
-    
-    themeToggle.addEventListener('click', () => {
-      // Cycle accent and toggle theme
-      accentIndex = (accentIndex + 1) % ACCENTS.length;
-      updateAccent(accentIndex);
-      toggleTheme();
-      rippleFrom(themeToggle);
-      
-      // Trigger ripple animation
-      if (themeRipple) {
-        themeRipple.style.animation = 'none';
-        void themeRipple.offsetWidth; // Force reflow
-        themeRipple.style.animation = 'theme-ripple-expand 0.6s ease-out';
-      }
-      
-      // retrigger reveal transitions slightly to dramatize
-      setTimeout(() => triggerRevealOnToggle(), 150);
-      
-      // Update particles with new accent
-      if (particlesContainer) {
-        particles.forEach(particle => {
-          const accentColor = ACCENTS[accentIndex].main;
-          particle.element.style.background = accentColor;
-          particle.element.style.boxShadow = `0 0 ${particle.size * 2}px ${accentColor}`;
-        });
-      }
-    });
-    
-    // Add hover effect
-    themeToggle.addEventListener('mouseenter', () => {
-      if (themeRipple) {
-        themeRipple.style.animation = 'theme-ripple-pulse 1s ease-in-out';
-      }
-    });
-  }
-
-  // Initialize theme: localStorage or system preference
-  (function initTheme() {
-    try {
-      const saved = localStorage.getItem('theme');
-      if (saved === 'light' || saved === 'dark') {
-        docEl.setAttribute('data-theme', saved);
-      } else {
-        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        docEl.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
-      }
-    } catch {
-      // ignore
-    }
-    updateMetaThemeColor();
-  })();
-
-  // Scroll Reveal with stagger
-  const revealNodes = new Set();
-  const io = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) {
-        // Add stagger delay for grid items
-        const isGridItem = entry.target.closest('.values-grid, .exp-grid, .refs-grid, .contact-row');
-        if (isGridItem) {
-          const items = Array.from(isGridItem.children);
-          const index = items.indexOf(entry.target.closest('.value, .exp-card, .ref-card, .icon-link'));
-          if (index >= 0) {
-            setTimeout(() => {
-              entry.target.classList.add('is-visible');
-            }, index * 100);
-          } else {
-            entry.target.classList.add('is-visible');
-          }
-        } else {
-          entry.target.classList.add('is-visible');
-        }
-        io.unobserve(entry.target);
-        revealNodes.delete(entry.target);
+  console.log('🤖 AI Assistant loaded and ready!');
+})();ete(entry.target);
       }
     }
   }, { threshold: 0.12 });
@@ -673,4 +578,246 @@
 
   console.log('✨ Professional Portfolio with Hip Hop Vibes loaded!');
   console.log('🚀 Features: Enhanced Theme Toggle, Contact Form, Magnetic 3D, Particle System, Holographic Grid');
+
+  // AI ASSISTANT FUNCTIONALITY
+  const aiToggle = document.getElementById('ai-toggle');
+  const aiChat = document.getElementById('ai-chat');
+  const aiClose = document.getElementById('ai-close');
+  const aiInput = document.getElementById('ai-input');
+  const aiSend = document.getElementById('ai-send');
+  const aiMessages = document.getElementById('ai-messages');
+
+  // AI Knowledge Base - All about Eliud
+  const aiKnowledge = {
+    name: 'Eliud',
+    role: 'Tourism Marketing Manager & Web Developer',
+    email: 'ellymchome503@gmail.com',
+    whatsapp: '+255621671652',
+    services: [
+      'Tourism Marketing - Destination campaigns, partner funnels, email drips, retargeting sequences',
+      'Web Development - Responsive websites, modern stacks, SEO foundations, component libraries',
+      'Branding Projects - Brand systems, design tokens, visual identity',
+      'Content Creation - Multimedia stories, social assets, short-form video with CTAs'
+    ],
+    experience: [
+      'Tourism Marketing - Designed destination campaigns, built partner funnels, optimized content calendars',
+      'Web Development & Branding - Shipped responsive websites, created component libraries, integrated analytics',
+      'Content Creation - Produced multimedia stories, managed social assets, scripted short-form video'
+    ],
+    values: [
+      'Creativity - Original concepts with measurable outcomes',
+      'Reliability - Clear comms, tight delivery, ownership from brief to ship',
+      'Digital Excellence - Performance-first design, clean code, systems that scale'
+    ],
+    referees: [
+      'Abuu Karata - General Manager, Airport Planet Lodge',
+      'Alex Benson Sichona - Ass. Lecturer, University of Dar es Salaam',
+      'Maria Donath Labila - Tour Operator, Tupande Usambara Cultural Tour'
+    ],
+    tagline: 'I map dreams to journeys, code visions to clicks rhythm in strategy, harmony in pixels, momentum in the market.',
+    about: 'I build magnetic brand stories for destinations and craft digital experiences that convert. From GTM strategy to web flows, my work blends research, empathy, and precise execution.'
+  };
+
+  // AI Response Generator
+  function generateAIResponse(userMessage) {
+    const message = userMessage.toLowerCase().trim();
+    
+    // Greetings
+    if (message.match(/^(hi|hello|hey|greetings|good morning|good afternoon|good evening)/)) {
+      return `Hello! 👋 I'm Eliud's AI Assistant. I'm here to help you learn about ${aiKnowledge.name}'s services, experience, and how to get in touch. What would you like to know?`;
+    }
+    
+    // Name
+    if (message.match(/(who are you|what's your name|your name|who is eliud|tell me about eliud)/)) {
+      return `${aiKnowledge.name} is a ${aiKnowledge.role}. ${aiKnowledge.about} ${aiKnowledge.tagline}`;
+    }
+    
+    // Services
+    if (message.match(/(services|what can|what do you|offer|provide|capabilities|skills)/)) {
+      return `Here are ${aiKnowledge.name}'s main services:\n\n${aiKnowledge.services.map((s, i) => `${i + 1}. ${s}`).join('\n\n')}\n\nWould you like more details about any specific service?`;
+    }
+    
+    // Experience
+    if (message.match(/(experience|background|work|projects|portfolio|what has|done)/)) {
+      return `${aiKnowledge.name} has experience in:\n\n${aiKnowledge.experience.map((e, i) => `${i + 1}. ${e}`).join('\n\n')}\n\nYou can see more details in the Experience section above!`;
+    }
+    
+    // Contact
+    if (message.match(/(contact|email|phone|whatsapp|reach|get in touch|how to contact|connect)/)) {
+      return `You can reach ${aiKnowledge.name} through:\n\n📧 Email: ${aiKnowledge.email}\n📱 WhatsApp: ${aiKnowledge.whatsapp}\n\nOr use the contact form above to send a direct message! You can also book a coffee meeting via Cal.com.`;
+    }
+    
+    // Pricing/Cost
+    if (message.match(/(price|cost|fee|rate|how much|pricing|budget)/)) {
+      return `For pricing and project quotes, please reach out directly via email (${aiKnowledge.email}) or WhatsApp (${aiKnowledge.whatsapp}). ${aiKnowledge.name} provides customized quotes based on your specific project needs.`;
+    }
+    
+    // Availability
+    if (message.match(/(available|free|busy|when|schedule|timeline|time)/)) {
+      return `${aiKnowledge.name} is available for new projects! You can book a coffee meeting through the Cal.com link in the footer, or reach out via WhatsApp for immediate inquiries.`;
+    }
+    
+    // Tourism Marketing
+    if (message.match(/(tourism|marketing|destination|campaign|travel|tourism marketing)/)) {
+      return `${aiKnowledge.name} specializes in tourism marketing, including:\n\n• Destination campaigns that increase inquiries and bookings\n• Partner funnels and email drip campaigns\n• Retargeting sequences\n• Content calendars mapped to traveler intent\n• Geo-targeted creative and landing pages\n• Multi-touch attribution dashboards\n\nInterested in discussing a tourism marketing project?`;
+    }
+    
+    // Web Development
+    if (message.match(/(web|website|development|developer|coding|build|create website|web dev)/)) {
+      return `${aiKnowledge.name} offers web development services:\n\n• Responsive websites with modern tech stacks\n• SEO foundations and optimization\n• Component libraries and brand systems\n• Analytics integration and A/B testing\n• Performance-first design\n• Clean, scalable code\n\nReady to build something amazing?`;
+    }
+    
+    // Portfolio/Projects
+    if (message.match(/(portfolio|projects|work|examples|showcase|samples|previous work)/)) {
+      return `You're currently viewing ${aiKnowledge.name}'s portfolio! This site itself showcases the quality of work. For specific project examples and case studies, please reach out directly. ${aiKnowledge.name} has worked with various clients including hotels, tour operators, and educational institutions.`;
+    }
+    
+    // Referees/Testimonials
+    if (message.match(/(referee|testimonial|reference|review|feedback|client|satisfied)/)) {
+      return `${aiKnowledge.name} has worked with trusted partners:\n\n${aiKnowledge.referees.map((r, i) => `${i + 1}. ${r}`).join('\n\n')}\n\nYou can see their testimonials in the Referees section above!`;
+    }
+    
+    // Values/Approach
+    if (message.match(/(values|approach|philosophy|how|method|way|style)/)) {
+      return `${aiKnowledge.name}'s core values:\n\n${aiKnowledge.values.map((v, i) => `${i + 1}. ${v}`).join('\n\n')}\n\nThis approach ensures every project delivers measurable results and exceptional quality.`;
+    }
+    
+    // CV/Resume
+    if (message.match(/(cv|resume|download|pdf|curriculum|vitae)/)) {
+      return `You can download ${aiKnowledge.name}'s CV by clicking the "Download CV" button in the hero section above!`;
+    }
+    
+    // Default response
+    const defaultResponses = [
+      `I'm not sure I understand that question. Could you ask about ${aiKnowledge.name}'s services, experience, or how to get in touch?`,
+      `Hmm, let me help you better. You can ask me about:\n• Services offered\n• Experience and background\n• How to contact ${aiKnowledge.name}\n• Tourism marketing\n• Web development\n• Or anything else about the portfolio!`,
+      `I'd be happy to help! Try asking about ${aiKnowledge.name}'s services, experience, contact information, or specific areas like tourism marketing or web development.`
+    ];
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+  }
+
+  // Add message to chat
+  function addMessage(content, isUser = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `ai-message ${isUser ? 'user' : 'ai'}`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'ai-message-avatar';
+    avatar.textContent = isUser ? '👤' : '🤖';
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'ai-message-content';
+    messageContent.textContent = content;
+    
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+    aiMessages.appendChild(messageDiv);
+    
+    // Scroll to bottom
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+    
+    return messageDiv;
+  }
+
+  // Show typing indicator
+  function showTyping() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'ai-message ai';
+    typingDiv.id = 'ai-typing';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'ai-message-avatar';
+    avatar.textContent = '🤖';
+    
+    const typingContent = document.createElement('div');
+    typingContent.className = 'ai-message-typing';
+    typingContent.innerHTML = '<span></span><span></span><span></span>';
+    
+    typingDiv.appendChild(avatar);
+    typingDiv.appendChild(typingContent);
+    aiMessages.appendChild(typingDiv);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+    
+    return typingDiv;
+  }
+
+  // Remove typing indicator
+  function removeTyping() {
+    const typing = document.getElementById('ai-typing');
+    if (typing) typing.remove();
+  }
+
+  // Send message
+  function sendMessage() {
+    const message = aiInput.value.trim();
+    if (!message) return;
+    
+    // Add user message
+    addMessage(message, true);
+    aiInput.value = '';
+    
+    // Show typing indicator
+    const typing = showTyping();
+    
+    // Generate and show AI response after delay
+    setTimeout(() => {
+      removeTyping();
+      const response = generateAIResponse(message);
+      addMessage(response);
+    }, 800 + Math.random() * 400); // Simulate thinking time
+  }
+
+  // Toggle chat
+  if (aiToggle && aiChat) {
+    aiToggle.addEventListener('click', () => {
+      const isActive = aiChat.classList.contains('active');
+      if (!isActive) {
+        aiChat.classList.add('active');
+        aiChat.setAttribute('aria-hidden', 'false');
+        aiInput.focus();
+        
+        // Add welcome message if chat is empty
+        if (aiMessages.children.length === 0) {
+          setTimeout(() => {
+            addMessage(`Hello! 👋 I'm ${aiKnowledge.name}'s AI Assistant. I can help you learn about services, experience, and how to get in touch. What would you like to know?`);
+          }, 300);
+        }
+      }
+    });
+  }
+
+  // Close chat
+  if (aiClose) {
+    aiClose.addEventListener('click', () => {
+      aiChat.classList.remove('active');
+      aiChat.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  // Send on button click
+  if (aiSend) {
+    aiSend.addEventListener('click', sendMessage);
+  }
+
+  // Send on Enter key
+  if (aiInput) {
+    aiInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+  }
+
+  // Close chat when clicking outside (optional)
+  document.addEventListener('click', (e) => {
+    if (aiChat && aiChat.classList.contains('active')) {
+      if (!aiChat.contains(e.target) && !aiToggle.contains(e.target)) {
+        // Optional: uncomment to close on outside click
+        // aiChat.classList.remove('active');
+        // aiChat.setAttribute('aria-hidden', 'true');
+      }
+    }
+  });
+
+  console.log('🤖 AI Assistant loaded and ready!');
 })();
