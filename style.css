@@ -96,14 +96,14 @@ main {
 }
 
 .section { 
-  padding: 96px 0; 
+  padding: clamp(60px, 8vw, 96px) 0; 
   scroll-margin-top: 84px;
   position: relative;
   z-index: 1;
 }
 .section-head { margin-bottom: 28px; }
-.section-title { font-size: 32px; letter-spacing: 0.4px; margin: 0 0 8px; }
-.section-sub { color: var(--muted); margin: 0; }
+.section-title { font-size: clamp(24px, 4vw, 32px); letter-spacing: 0.4px; margin: 0 0 8px; }
+.section-sub { color: var(--muted); margin: 0; font-size: clamp(14px, 2vw, 16px); }
 
 .neon { text-shadow: var(--glow); color: var(--accent-2); }
 
@@ -396,8 +396,8 @@ html[data-theme='light'] .theme-toggle .moon {
 
 /* HERO */
 .hero-section { 
-  padding-top: 120px; 
-  padding-bottom: 96px;
+  padding-top: clamp(100px, 12vw, 120px); 
+  padding-bottom: clamp(60px, 8vw, 96px);
   min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
@@ -1298,4 +1298,19 @@ html[data-theme='light'] .theme-toggle .moon {
 @media (max-width: 640px) { 
   :root { --glow: 0 0 18px rgba(76, 201, 255, 0.45), 0 0 28px rgba(76, 201, 255, 0.2); }
   #grid-canvas { display: none; }
+  .container { padding: 0 16px; }
+  .section { padding: 48px 0; }
+  .hero-section { padding-top: 80px; padding-bottom: 48px; min-height: auto; }
+  .btn { height: 40px; padding: 0 16px; font-size: 14px; }
+  .contact-row { gap: 16px; }
+  .icon-link { width: 50px; height: 50px; }
+  .icon-link img { width: 24px; height: 24px; }
+  .form-wrapper { padding: 0 8px; }
+  .contact-form { padding: 24px 20px; }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 900px) {
+  .container { padding: 0 24px; }
+  .section { padding: 72px 0; }
 }
