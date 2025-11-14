@@ -1,61 +1,49 @@
-  // ADVANCED TEXT REVEAL
-  function initTextReveal() {
-    const textReveal = document.querySelector('.text-reveal');
-    if (textReveal) {
-      // Trigger reveal animation
-      setTimeout(() => {
-        textReveal.classList.add('is-visible');
-      }, 300);
-    }
-    
-    // Split text animation for tagline
-    const textSplit = document.querySelector('.text-split');
-    if (textSplit) {
-      const words = textSplit.textContent.split(' ');
-      textSplit.innerHTML = words.map((word, i) => 
-        `<span style="animation-delay: ${i * 0.1}s; opacity: 0; animation: fade-in-word 0.6s ease forwards;">${word}</span>`
-      ).join(' ');
-    }
+// Eliud — Professional Portfolio with Hip Hop Vibes
+// - Theme switcher with ripple wave + accent cycling + ALIVE animations
+// - Scroll-triggered reveal animations
+// - Smooth nav (native CSS) + footer year
+// - Contact form handling
+// - Particle system with connections
+// - Parallax effects
+// - Magnetic interactions
+
+(function () {
+  const docEl = document.documentElement;
+  const rippleRoot = document.getElementById('ripple-root');
+  const themeToggle = document.getElementById('themeToggle');
+  const menuToggle = document.getElementById('menuToggle');
+  const particlesContainer = document.getElementById('particles');
+  const gridCanvas = document.getElementById('grid-canvas');
+  const contactForm = document.querySelector('.contact-form');
+
+  // Accent palette rotation
+  const ACCENTS = [
+    { name: 'blue', main: getCSS('--accent-blue') || '#4cc9ff' },
+    { name: 'green', main: getCSS('--accent-green') || '#00f5a0' },
+    { name: 'orange', main: getCSS('--accent-orange') || '#ff8a00' },
+    { name: 'pink', main: getCSS('--accent-pink') || '#ff46c6' }
+  ];
+  let accentIndex = 0;
+
+  // Utilities
+  function getCSS(varName) {
+    return getComputedStyle(docEl).getPropertyValue(varName).trim();
   }
-
-  // Add CSS for word fade-in
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fade-in-word {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  `;
-  document.head.appendChild(style);
-
-  initTextReveal();
-
-  // Add entrance animation to hero title
-  const heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) {
-    setTimeout(() => {
-      heroTitle.style.animation = 'title-glow 3s ease-in-out infinite, floating 3s ease-in-out infinite';
-    }, 500);
+  function setCSS(varName, value) {
+    docEl.style.setProperty(varName, value);
   }
-
-  // Add typewriter effect to hero role
-  const heroRole = document.querySelector('.hero-role');
-  if (heroRole && !heroRole.classList.contains('typewriter-complete')) {
-    heroRole.classList.add('typewriter-complete');
+  function currentTheme() {
+    return docEl.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
   }
-
-  // Update grid color on accent change
-  const originalUpdateAccent = updateAccent;
-  updateAccent = function(index) {
-    originalUpdateAccent(index);
-    if (gridCanvas) {
-      // Grid will update on next frame
-    }
-  };
-
-  console.log('✨ Next-Gen Portfolio loaded with cutting-edge features!');
-  console.log('🚀 Features: Holographic Grid, Magnetic 3D, Particle Connections, Advanced Cursor, Mouse Trails');
-})();ent for glow/gradient (slightly lighter)
+  function toggleTheme() {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    docEl.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch {}
+    updateMetaThemeColor();
+  }
+  function updateAccent(index) {
+    const a = ACCENTS[index % ACCENTS.length];
+    // Compute a secondary accent for glow/gradient (slightly lighter)
     const secondary = a.name === 'blue' ? '#72ddff' :
                      a.name === 'green' ? '#44ffc3' :
                      a.name === 'orange' ? '#ffb357' : '#ff7bdd';
@@ -91,9 +79,9 @@
     
     let time = 0;
     const gridSize = 50;
-    const lineColor = getCSS('--accent-2') || '#72ddff';
     
     function drawGrid() {
+      const lineColor = getCSS('--accent-2') || '#72ddff';
       ctx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
       ctx.strokeStyle = lineColor;
       ctx.lineWidth = 0.5;
@@ -124,92 +112,9 @@
     drawGrid();
   }
 
-  // MOUSE TRAIL SYSTEM
-  let trailDots = [];
-  let lastTrailTime = 0;
-  
-  function createMouseTrail(e) {
-    if (!mouseTrailContainer || window.innerWidth < 768) return;
-    
-    const now = Date.now();
-    if (now - lastTrailTime < 16) return; // Throttle to ~60fps
-    lastTrailTime = now;
-    
-    const dot = document.createElement('div');
-    dot.className = 'trail-dot';
-    dot.style.left = e.clientX + 'px';
-    dot.style.top = e.clientY + 'px';
-    
-    const accentColor = ACCENTS[accentIndex].main;
-    dot.style.background = accentColor;
-    dot.style.boxShadow = `0 0 8px ${accentColor}`;
-    
-    mouseTrailContainer.appendChild(dot);
-    
-    setTimeout(() => {
-      if (dot.parentNode) {
-        dot.remove();
-      }
-    }, 800);
-  }
-
-  // CUSTOM CURSOR WITH TRAIL
-  let mouseX = 0;
-  let mouseY = 0;
-  let followerX = 0;
-  let followerY = 0;
-  let trailX = 0;
-  let trailY = 0;
-
-  function updateCursor(e) {
-    if (!cursor || !cursorFollower) return;
-    
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    cursor.style.left = mouseX + 'px';
-    cursor.style.top = mouseY + 'px';
-
-    // Smooth follower with easing
-    followerX += (mouseX - followerX) * 0.1;
-    followerY += (mouseY - followerY) * 0.1;
-    
-    cursorFollower.style.left = followerX + 'px';
-    cursorFollower.style.top = followerY + 'px';
-
-    // Cursor trail with more delay
-    if (cursorTrail) {
-      trailX += (mouseX - trailX) * 0.05;
-      trailY += (mouseY - trailY) * 0.05;
-      cursorTrail.style.left = trailX + 'px';
-      cursorTrail.style.top = trailY + 'px';
-    }
-
-    // Create mouse trail dots
-    createMouseTrail(e);
-
-    // Check if hovering over interactive elements
-    const hovered = e.target.closest('a, button, .nav-link, .exp-toggle, .star, .icon-link');
-    if (hovered) {
-      cursor.classList.add('hover');
-      cursorFollower.classList.add('hover');
-      if (cursorTrail) cursorTrail.classList.add('hover');
-    } else {
-      cursor.classList.remove('hover');
-      cursorFollower.classList.remove('hover');
-      if (cursorTrail) cursorTrail.classList.remove('hover');
-    }
-  }
-
-  // Only enable custom cursor on desktop
-  if (window.innerWidth > 640) {
-    document.addEventListener('mousemove', updateCursor);
-    initHolographicGrid();
-  }
-
   // ADVANCED PARTICLE SYSTEM WITH CONNECTIONS
   const particles = [];
-  const maxParticles = 30;
+  const maxParticles = 25;
   
   function createParticle() {
     if (!particlesContainer || window.innerWidth < 768) return null;
@@ -250,46 +155,6 @@
       
       particle.element.style.left = particle.x + 'px';
       particle.element.style.top = particle.y + 'px';
-      
-      // Draw connections to nearby particles
-      particles.slice(i + 1).forEach(otherParticle => {
-        const dx = particle.x - otherParticle.x;
-        const dy = particle.y - otherParticle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < 150) {
-          // Create connection line if it doesn't exist
-          let connection = particlesContainer.querySelector(`[data-connection="${i}-${particles.indexOf(otherParticle)}"]`);
-          if (!connection) {
-            connection = document.createElement('div');
-            connection.className = 'particle-connection';
-            connection.setAttribute('data-connection', `${i}-${particles.indexOf(otherParticle)}`);
-            particlesContainer.appendChild(connection);
-          }
-          
-          const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-          connection.style.width = distance + 'px';
-          connection.style.left = otherParticle.x + 'px';
-          connection.style.top = otherParticle.y + 'px';
-          connection.style.transform = `rotate(${angle}deg)`;
-          connection.style.opacity = (1 - distance / 150) * 0.3;
-        }
-      });
-    });
-    
-    // Remove old connections
-    particlesContainer.querySelectorAll('.particle-connection').forEach(conn => {
-      const [i, j] = conn.getAttribute('data-connection').split('-').map(Number);
-      if (!particles[i] || !particles[j]) {
-        conn.remove();
-      } else {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance > 150) {
-          conn.remove();
-        }
-      }
     });
     
     requestAnimationFrame(updateParticles);
@@ -339,7 +204,7 @@
 
   initMagneticEffects();
 
-  // ADVANCED PARALLAX EFFECTS WITH 3D
+  // PARALLAX EFFECTS
   function initParallax() {
     const parallaxElements = document.querySelectorAll('.hero-img, .card.glass, .section-title');
     
@@ -396,24 +261,41 @@
     rip.addEventListener('animationend', () => rip.remove());
   }
 
-  // Theme toggle click
+  // ENHANCED THEME TOGGLE WITH ALIVE ANIMATION
   if (themeToggle) {
+    const themeRipple = themeToggle.querySelector('.theme-ripple');
+    
     themeToggle.addEventListener('click', () => {
       // Cycle accent and toggle theme
       accentIndex = (accentIndex + 1) % ACCENTS.length;
       updateAccent(accentIndex);
       toggleTheme();
       rippleFrom(themeToggle);
+      
+      // Trigger ripple animation
+      if (themeRipple) {
+        themeRipple.style.animation = 'none';
+        void themeRipple.offsetWidth; // Force reflow
+        themeRipple.style.animation = 'theme-ripple-expand 0.6s ease-out';
+      }
+      
       // retrigger reveal transitions slightly to dramatize
       setTimeout(() => triggerRevealOnToggle(), 150);
       
       // Update particles with new accent
       if (particlesContainer) {
-        Array.from(particlesContainer.children).forEach(particle => {
+        particles.forEach(particle => {
           const accentColor = ACCENTS[accentIndex].main;
-          particle.style.background = accentColor;
-          particle.style.boxShadow = `0 0 4px ${accentColor}`;
+          particle.element.style.background = accentColor;
+          particle.element.style.boxShadow = `0 0 ${particle.size * 2}px ${accentColor}`;
         });
+      }
+    });
+    
+    // Add hover effect
+    themeToggle.addEventListener('mouseenter', () => {
+      if (themeRipple) {
+        themeRipple.style.animation = 'theme-ripple-pulse 1s ease-in-out';
       }
     });
   }
@@ -479,7 +361,7 @@
   const y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 
-  // Initial accent sync (if user has a preference stored in future)
+  // Initial accent sync
   updateAccent(accentIndex);
 
   // Mobile menu
@@ -528,6 +410,7 @@
     document.getElementById('experience'),
     document.getElementById('referees'),
     document.getElementById('contact'),
+    document.getElementById('email-form'),
   ].filter(Boolean);
   const stars = Array.from(document.querySelectorAll('.constellation .star'));
 
@@ -630,6 +513,46 @@
     });
   });
 
+  // CONTACT FORM HANDLING
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitBtn = this.querySelector('.form-submit');
+      const name = this.querySelector('#name').value;
+      const email = this.querySelector('#email').value;
+      const subject = this.querySelector('#subject').value;
+      const message = this.querySelector('#message').value;
+      
+      // Show loading state
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+      
+      // Create mailto link
+      const mailtoLink = `mailto:ellymchome503@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
+      
+      // Open email client
+      window.location.href = mailtoLink;
+      
+      // Reset form after a delay
+      setTimeout(() => {
+        this.reset();
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
+        
+        // Show success feedback
+        const originalText = submitBtn.querySelector('span:first-child').textContent;
+        submitBtn.querySelector('span:first-child').textContent = 'Message Sent! ✓';
+        submitBtn.style.background = 'linear-gradient(180deg, #00f5a0, #44ffc3)';
+        
+        setTimeout(() => {
+          submitBtn.querySelector('span:first-child').textContent = originalText;
+          submitBtn.style.background = '';
+        }, 3000);
+      }, 500);
+    });
+  }
+
   // Enhanced button interactions
   document.querySelectorAll('.btn').forEach((btn) => {
     btn.addEventListener('mouseenter', function() {
@@ -686,29 +609,16 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       // Reinitialize particles if needed
-      if (window.innerWidth >= 768 && particlesContainer.children.length < 10) {
+      if (window.innerWidth >= 768 && particles.length < 10) {
         initParticles();
       }
       
-      // Disable custom cursor on mobile
-      if (window.innerWidth <= 640) {
-        if (cursor) cursor.style.display = 'none';
-        if (cursorFollower) cursorFollower.style.display = 'none';
-        document.body.style.cursor = 'auto';
-      } else {
-        if (cursor) cursor.style.display = 'block';
-        if (cursorFollower) cursorFollower.style.display = 'block';
-        document.body.style.cursor = 'none';
+      // Reinitialize grid
+      if (window.innerWidth >= 768) {
+        initHolographicGrid();
       }
     }, 250);
   });
-
-  // Initial cursor visibility check
-  if (window.innerWidth <= 640) {
-    if (cursor) cursor.style.display = 'none';
-    if (cursorFollower) cursorFollower.style.display = 'none';
-    document.body.style.cursor = 'auto';
-  }
 
   // ADVANCED TEXT REVEAL
   function initTextReveal() {
@@ -756,15 +666,11 @@
     heroRole.classList.add('typewriter-complete');
   }
 
-  // Update grid color on accent change
-  const originalUpdateAccent = updateAccent;
-  updateAccent = function(index) {
-    originalUpdateAccent(index);
-    if (gridCanvas) {
-      // Grid will update on next frame
-    }
-  };
+  // Initialize grid
+  if (window.innerWidth >= 768) {
+    initHolographicGrid();
+  }
 
-  console.log('✨ Next-Gen Portfolio loaded with cutting-edge features!');
-  console.log('🚀 Features: Holographic Grid, Magnetic 3D, Particle Connections, Advanced Cursor, Mouse Trails');
+  console.log('✨ Professional Portfolio with Hip Hop Vibes loaded!');
+  console.log('🚀 Features: Enhanced Theme Toggle, Contact Form, Magnetic 3D, Particle System, Holographic Grid');
 })();
